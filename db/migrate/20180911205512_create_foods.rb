@@ -10,6 +10,7 @@ class CreateFoods < ActiveRecord::Migration[5.0]
       t.boolean :vegetarian
       t.boolean :vegan
       t.boolean :contains_gluten
+      t.boolean :halal
 
     end
   end
