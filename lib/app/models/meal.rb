@@ -1,8 +1,8 @@
 class Meal < ActiveRecord::Base
-
-  def initialize(argument)
-    @argument = argument
-  end
+  has_many :ingredients
+  has_many :foods, through: :ingredients
+  has_many :favorites
+  has_many :users, through: :favorites
 
   def my_ingredients
     Ingredient.all.select do |ingredient|
