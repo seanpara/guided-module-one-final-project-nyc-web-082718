@@ -36,8 +36,9 @@ class User < ActiveRecord::Base
       #  I should be able to prepare a meal and subtract the ingredients from my inventory
       #reduce the number of items in each user's inventory by the amount of each food in the meal
       Inventory.all.each do |item|
-        if inventory.user_id == self && inventory.food_id == meal.food_id
-          inventory.quantity -= 1
+        if item.user == self && item.food == meal.food
+          item.quantity - meal.food.quantity
+        end
       end
     end
 
