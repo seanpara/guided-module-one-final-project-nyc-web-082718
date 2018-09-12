@@ -10,9 +10,10 @@ require_relative 'config/environment'
 
 # Chris:
 # easy: I want to be able to query my favorites in place of the full meals table
-# easy: I want to be able to eat a meal and reduce the total daily calorie count needed
-# easy: I want to be able to restrict my meal selection based on the category: time of day
+## easy: I want to be able to eat a meal and reduce the total daily calorie count needed
+## easy: I want to be able to restrict my meal selection based on the category: time of day
 # medium: I want to be able to specify a nutrient amount and get a list of meals based on that
+#  |==> meal needs to be able to list its nutrients
 # medium: I want to be able to CRUD meals
 # medium/hard: I want to be able to restrict my meal selection based on dietary restrictions on the foods
 # hard: I want to be given a list of meals which satisfy my daily calorie count
