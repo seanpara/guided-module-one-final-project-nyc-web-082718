@@ -208,54 +208,54 @@ inventory22.food = food6
 inventory22.quantity = 99
 # ingredient1 = Ingredient.create(meal1, food1, 2)
 ingredient1 = Ingredient.create
-ingredient1 = Ingredient.meal = meal1
-ingredient1 = Ingredient.food = food2
-ingredient1 = Ingredient.quantity = 3
+ingredient1.meal = meal1
+ingredient1.food = food2
+ingredient1.quantity = 3
 # ingredient2 = Ingredient.create(meal1, food2, 2)
 ingredient2 = Ingredient.create
-ingredient2 = Ingredient.meal = meal1
-ingredient2 = Ingredient.food = food2
-ingredient2 = Ingredient.quantity = 2
+ingredient2.meal = meal1
+ingredient2.food = food2
+ingredient2.quantity = 2
 # ingredient3 = Ingredient.create(meal1, food3, 1)
 ingredient3 = Ingredient.create
-ingredient3 = Ingredient.meal = meal1
-ingredient3 = Ingredient.food = food3
-ingredient3 = Ingredient.quantity = 1
+ingredient3.meal = meal1
+ingredient3.food = food3
+ingredient3.quantity = 1
 # ingredient4 = Ingredient.create(meal1, food4, 2)
 ingredient4 = Ingredient.create
-ingredient4 = Ingredient.meal = meal1
-ingredient4 = Ingredient.food = food4
-ingredient4 = Ingredient.quantity = 2
+ingredient4.meal = meal1
+ingredient4.food = food4
+ingredient4.quantity = 2
 # ingredient5 = Ingredient.create(meal2, food1, 2)
 ingredient5 = Ingredient.create
-ingredient5 = Ingredient.meal = meal2
-ingredient5 = Ingredient.food = food1
-ingredient5 = Ingredient.quantity = 2
+ingredient5.meal = meal2
+ingredient5.food = food1
+ingredient5.quantity = 2
 # ingredient6 = Ingredient.create(meal2, food6, 2)
 ingredient6 = Ingredient.create
-ingredient6 = Ingredient.meal = meal2
-ingredient6 = Ingredient.food = food6
-ingredient6 = Ingredient.quantity = 2
+ingredient6.meal = meal2
+ingredient6.food = food6
+ingredient6.quantity = 2
 # ingredient7 = Ingredient.create(meal3, food3, 1)
 ingredient7 = Ingredient.create
-ingredient7 = Ingredient.meal = meal3
-ingredient7 = Ingredient.food = food3
-ingredient7 = Ingredient.quantity = 1
+ingredient7.meal = meal3
+ingredient7.food = food3
+ingredient7.quantity = 1
 # ingredient8 = Ingredient.create(meal4, food1, 5)
 ingredient8 = Ingredient.create
-ingredient8 = Ingredient.meal = meal8
-ingredient8 = Ingredient.food = food1
-ingredient8 = Ingredient.quantity = 5
+ingredient8.meal = meal4
+ingredient8.food = food1
+ingredient8.quantity = 5
 # ingredient9 = Ingredient.create(meal4, food2, 3)
 ingredient9 = Ingredient.create
-ingredient9 = Ingredient.meal = meal4
-ingredient9 = Ingredient.food = food2
-ingredient9 = Ingredient.quantity = 3
+ingredient9.meal = meal4
+ingredient9.food = food2
+ingredient9.quantity = 3
 # ingredient10 = Ingredient.create(meal4, food4, 2)
 ingredient10 = Ingredient.create
-ingredient10 = Ingredient.meal = meal4
-ingredient10 = Ingredient.food = food4
-ingredient10 = Ingredient.quantity = 2
+ingredient10.meal = meal4
+ingredient10.food = food4
+ingredient10.quantity = 2
 # favorite1 = Favorite.create(user1, meal1)
 favorite1 = Favorite.create
 favorite1.user = user1

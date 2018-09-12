@@ -5,6 +5,12 @@ class Meal < ActiveRecord::Base
   has_many :users, through: :favorites
 
 
+  def my_ingredients
+    Ingredient.all.select do |ingredient|
+      ingredient.meal == self
+    end
+  end
+
   def my_foods
    hash = {}
    ingredients = self.my_ingredients
@@ -23,12 +29,6 @@ class Meal < ActiveRecord::Base
       end
     end
     nutrients
-  end
-
-  def my_ingredients
-    Ingredient.all.select do |ingredient|
-      ingredient.meal == self
-    end
   end
 
   def my_calories_and_quanities
@@ -64,7 +64,7 @@ class Meal < ActiveRecord::Base
   #   puts "#{self.name} should be eaten for " array.join(' and ')"."
   # end
 
-  def is_classification?(classification)
-    foods = self
-  end
+  # def is_classification?(classification)
+  #   foods = self
+  # end
 end

@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
       Meal.select do |meal|
         meal.nutrients[macro] >= amount
       end
+    end
+
     def meal_request_based_on_calories(calorie_amount)
       #I want to be able to enter a calorie amount and get a list of meals that are under that calorie level
       meal_array = Meal.all.select {|meal| meal.calories < calorie_amount}
