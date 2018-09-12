@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
       Meal.select do |meal|
         meal.nutrients[macro] >= amount
       end
+    end
+
     def meal_request_based_on_calories(calorie_amount)
       #I want to be able to enter a calorie amount and get a list of meals that are under that calorie level
       meal_array = Meal.all.select {|meal| meal.calories < calorie_amount}
@@ -33,8 +35,10 @@ class User < ActiveRecord::Base
     def prepare_meal(meal)
       #  I should be able to prepare a meal and subtract the ingredients from my inventory
       #reduce the number of items in each user's inventory by the amount of each food in the meal
-      user.kitchen - meal.foods.quanity
-
+      Inventory.all.each do |item|
+        if inventory.user_id == self && inventory.food_id == meal.food_id
+          inventory.quantity -= 1
+      end
     end
 
     def available_meals
