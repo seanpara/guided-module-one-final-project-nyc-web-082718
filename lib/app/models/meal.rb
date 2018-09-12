@@ -39,7 +39,6 @@ class Meal < ActiveRecord::Base
   #   puts "#{self.name} should be eaten for " array.join(' and ')"."
   # end
 
-
   def is_classification?(classification)
     foods = self
   end
