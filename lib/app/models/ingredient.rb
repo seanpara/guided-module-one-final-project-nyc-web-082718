@@ -1,4 +1,4 @@
-class Recipe < ActiveRecord::Base
+class Ingredient < ActiveRecord::Base
 
 
 end

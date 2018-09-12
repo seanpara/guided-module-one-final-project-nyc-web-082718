@@ -1,9 +1,5 @@
 class Meal < ActiveRecord::Base
 
-  def initialize(argument)
-    @argument = argument
-  end
-
   def my_ingredients
     Ingredient.all.select do |ingredient|
       ingredient.meal == self
