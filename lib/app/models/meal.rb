@@ -5,7 +5,7 @@ class Meal < ActiveRecord::Base
   has_many :users, through: :favorites
 
 
-  def my_ingredients
+  def ingredients
     Ingredient.all.select do |ingredient|
       ingredient.meal == self
     end

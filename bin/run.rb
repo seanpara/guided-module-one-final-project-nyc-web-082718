@@ -1,4 +1,13 @@
 require_relative '../config/environment'
+require_relative '../lib/command_line_interface.rb'
+# require_relative '..lib/app/models/favorite.rb'
+# require_relative '..lib/app/models/food.rb'
+# require_relative '..lib/app/models/ingredient.rb'
+# require_relative '..lib/app/models/inventory.rb'
+# require_relative '..lib/app/models/meal.rb'
+# require_relative '..lib/app/models/user.rb'
+
+run_command_line_interface
 
 # Sean:
 # easy: I want to be able to enter a calorie amount and get a list of meals that are under that calorie level
@@ -24,3 +33,5 @@ require_relative '../config/environment'
 # as a meal i want to be able to determine my calorie count based on the foods used in me
 
 # "https://github.com/toddmotto/public-apis#food--drink"
+
+ru
