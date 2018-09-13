@@ -58,13 +58,41 @@ class Meal < ActiveRecord::Base
     total
   end
 
-  # def what_category?
-  #   array = self.category.split
-  #   array.join(" and ")
-  #   puts "#{self.name} should be eaten for " array.join(' and ')"."
-  # end
 
-  # def is_classification?(classification)
-  #   foods = self
-  # end
+  def dairy?
+    self.my_foods.all? do |food, quantity|
+      food.dairy == false
+    end
+  end
+
+  def gluten?
+    self.my_foods.all? do |food, quantity|
+      food.dairy == false
+    end
+  end
+
+  def vegetarian?
+    self.my_foods.all? do |food, quantity|
+      food.vegetarian == true
+    end
+  end
+
+  def vegan?
+    self.my_foods.all? do |food, quantity|
+      food.vegan == true
+    end
+  end
+
+
+  def halal?
+    self.my_foods.all? do |food, quantity|
+      food.halal == true
+    end
+  end
+
+  def what_category?
+    array = self.category.split
+    puts "#{self.name} should be eaten for " + array.join(' or ') + "."
+  end
+
 end
