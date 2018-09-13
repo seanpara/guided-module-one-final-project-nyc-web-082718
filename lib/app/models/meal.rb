@@ -5,11 +5,12 @@ class Meal < ActiveRecord::Base
   has_many :users, through: :favorites
 
 
-  def ingredients
+  def my_ingredients
     Ingredient.all.select do |ingredient|
       ingredient.meal == self
     end
   end
+
 
   def my_foods
    hash = {}
@@ -58,33 +59,32 @@ class Meal < ActiveRecord::Base
     total
   end
 
-
-  def dairy?
+  def dairy
     self.my_foods.all? do |food, quantity|
       food.dairy == false
     end
   end
 
-  def gluten?
+  def gluten
     self.my_foods.all? do |food, quantity|
       food.dairy == false
     end
   end
 
-  def vegetarian?
+  def vegetarian
     self.my_foods.all? do |food, quantity|
       food.vegetarian == true
     end
   end
 
-  def vegan?
+  def vegan
     self.my_foods.all? do |food, quantity|
       food.vegan == true
     end
   end
 
 
-  def halal?
+  def halal
     self.my_foods.all? do |food, quantity|
       food.halal == true
     end

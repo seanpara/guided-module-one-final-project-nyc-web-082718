@@ -4,6 +4,7 @@ require_relative 'app/models/ingredient.rb'
 require_relative 'app/models/inventory.rb'
 require_relative 'app/models/meal.rb'
 require_relative 'app/models/user.rb'
+require_relative '../config/environment.rb'
 
 def welcome
   puts "Welcome to the food recommendatron 3000."
@@ -12,56 +13,58 @@ end
 def identify
   puts "Are you a new user or a returning user?"
   puts "Please answer 'new user' or 'returning user'"
-  @@new_or_not = gets.chomp
-  until @@new_or_not == "new user" || @@new_or_not == "returning user"
+  new_or_not = gets.chomp
+  until new_or_not == "new user" || new_or_not == "returning user"
     puts "That is not a valid response. Please type 'new_user' or 'returning_user' exactly as shown."
-    @@new_or_not = gets.chomp
+    new_or_not = gets.chomp
   end
+  set_up_user(new_or_not)
 end
 
 def id_valid?(id)
-  @@user = User.all.find { |user| user.id == id }
+  result = User.all.find { |user| user.id == id }
   if result == nil
-    puts "No with that user has been found. Start over and create a new account or enter a real ID dummy."
+    puts "No user with that has been found. Start over and create a new account or enter a real ID dummy."
   end
   puts "ID has been approved."
+  true
 end
 
-def get_new_user_info
+def get_new_user_info(user)
   puts "What is your name?"
   name = gets.chomp
-  @@user.name = name
+  user.name = name
   puts "What is your age?"
   age = gets.chomp
-  @@user.age = age
+  user.age = age
   puts "What is your daily calorie_limit?"
-  @@calorie_limit = gets.chomp
-  @@user.calorie_limit = calorie_limit
+  calorie_limit = gets.chomp
+  user.calorie_limit = calorie_limit
 end
 
-def set_up_user
-  if @@new_or_not == "returning_user"
-    puts "please enter your old ID"
-    id = gets.chomp
-    id_valid?(id)
-    puts "Welcome back #{@@user.name}".
-  else
-    @@user = User.create
-    puts "Please enter your information."
-    get_new_user_info
-    puts "Your account has been successfully created. You used ID is #{@@user.id}. Please store it somewhere safe."
-    create_inventories
-  end
-end
-
-def create_inventories
+def create_inventories(user)
   Food.all.each_with_index do |food, index|
     puts "How many #{food.name} do you have?"
     quantity = gets.chomp
     until quantity.class = Fixnum
       puts "Please enter a real number."
     end
-    Inventory.create({user: @@user, food: food, quantity: quantity})
+    Inventory.create({user: user, food: food, quantity: quantity})
+  end
+end
+
+def set_up_user(new_or_not)
+  if new_or_not == "returning user"
+    puts "please enter your old ID"
+    id = gets.chomp
+    id_valid?(id)
+    puts "Welcome back #{user.name}".
+  elsif new_or_not == "new user"
+    user = User.create
+    puts "Please enter your information."
+    get_new_user_info(user)
+    puts "Your account has been successfully created. You used ID is #{user.id}. Please store it somewhere safe."
+    create_inventories(user)
   end
 end
 
@@ -76,7 +79,7 @@ def topic?
   when "food"
     puts "What food do you want to ask about?"
     food = gets.chomp
-    possible_foods = Food.all.map { |food| food.name }
+    possible_foods = Food.all.map { |food_object| food_object.name }
     until possible_foods.include?(food)
       puts "Please select a real food."
       food = gets.chomp
@@ -89,12 +92,13 @@ def topic?
       puts "Please ask for legitimate information."
       desired_info = gets.chomp
     end
-    food.send("#{desired_info}")
+    actual_food = Food.all.find(food) { |food_object| food_object.name == food}
+    actual_food.send("#{desired_info}")
 
   when "meal"
     puts "What meal do you want to ask about?"
     meal = gets.chomp
-    possible_meals = Meal.all.map { |meal| meal.name }
+    possible_meals = Meal.all.map { |meal_object| meal_object.name }
     until possible_meals.include?(meal)
       puts "Please select a real meal."
       meal = gets.chomp
@@ -107,7 +111,10 @@ def topic?
       puts "Please ask for legitimate information."
       desired_info = gets.chomp
     end
-    meal.send("#{desired_info}")
+    # binding.pry
+    actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+    # binding.pry
+    actual_meal.send("#{desired_info}")
 
   when "recommend meal"
     puts "Would condition would you like your recommendation by?"
@@ -119,22 +126,22 @@ def topic?
     when "time"
       puts "Input a time."
       time = gets.chomp
-      @@user.suggest_meal_by_time(time)
+      user.suggest_meal_by_time(time)
     when "macros"
       puts "Input a macro."
       macro = gets.chomp
       puts "Input an amount."
       amount = gets.chomp
-      @@user.suggest_meal_by_macros(macro, amount)
+      user.suggest_meal_by_macros(macro, amount)
     when "calories"
       puts "Input a calorie amount."
       calorie_amount = gets.chomp
-      @@user.meal_request_based_on_calories(calorie_amount)
+      user.meal_request_based_on_calories(calorie_amount)
     else
       puts "Please enter a valid condition."
     end
   when "recommend course"
-    @@user.suggest_todays_meals
+    meal_recommendation(user)
   else
     puts "Please put a legitimate choice."
   end
@@ -143,7 +150,6 @@ end
 def run_command_line_interface
   welcome
   identify
-  set_up_user
   topic?
 end
 
@@ -207,3 +213,4 @@ end
 #       "#{option.name}"
 #     end
 #   end
+# end
