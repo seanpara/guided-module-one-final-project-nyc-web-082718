@@ -1,50 +1,58 @@
+require_relative 'app/models/favorite.rb'
+require_relative 'app/models/food.rb'
+require_relative 'app/models/ingredient.rb'
+require_relative 'app/models/inventory.rb'
+require_relative 'app/models/meal.rb'
+require_relative 'app/models/user.rb'
+
 def welcome
   puts "Welcome to the food recommendatron 3000."
 end
 
 def identify
   puts "Are you a new user or a returning user?"
-  puts "Please answer 'yes' or 'no'"
-  new_or_not = gets.chomp
+  puts "Please answer 'new user' or 'returning user'"
+  @@new_or_not = gets.chomp
 
-  until new_or_not == "yes" || new_or_not == "no"
-    puts "That is not a valid response. Please type 'yes' or 'no' exactly as shown."
-    new_or_not = gets.chomp
-  end
-end
-
-def set_up_user
-  if new_or_not == "yes"
-    puts "please enter your old ID"
-    id = gets.chomp
-    id_valid?(id)
-    puts "Welcome back #{user.name}".
-  else
-    user = User.create
-    puts "Please enter your information."
-    get_new_user_info
-    puts "Your account has been successfully created. You used ID is #{user.id}. Please store it somewhere safe."
+  until @@new_or_not == "new user" || @@new_or_not == "returning user"
+    puts "That is not a valid response. Please type 'new_user' or 'returning_user' exactly as shown."
+    @@new_or_not = gets.chomp
   end
 end
 
 def id_valid?(id)
-  user = User.all.find { |user| user.id == id }
+  @@user = User.all.find { |user| user.id == id }
   if result == nil
     puts "No with that user has been found. Start over and create a new account or enter a real ID dummy."
-    #need a method that restarts everything here
   end
+  puts "ID has been approved."
 end
 
 def get_new_user_info
   puts "What is your name?"
   name = gets.chomp
-  User.name = name
+  @@user.name = name
   puts "What is your age?"
   age = gets.chomp
-  User.age = age
+  @@user.age = age
   puts "What is your daily calorie_limit?"
-  calorie_limit = gets.chomp
-  User.calorie_limit = calorie_limit
+  @@calorie_limit = gets.chomp
+  @@user.calorie_limit = calorie_limit
+end
+
+def set_up_user
+  if @@new_or_not == "returning_user"
+    puts "please enter your old ID"
+    id = gets.chomp
+    id_valid?(id)
+    puts "Welcome back #{@@user.name}".
+  else
+    @@user = User.create
+    puts "Please enter your information."
+    get_new_user_info
+    puts "Your account has been successfully created. You used ID is #{@@user.id}. Please store it somewhere safe."
+    create_inventories
+  end
 end
 
 def create_inventories
@@ -54,7 +62,7 @@ def create_inventories
     until quantity.class = Fixnum
       puts "Please enter a real number."
     end
-    Inventory.create({user: user, food: food, quantity: quantity})
+    Inventory.create({user: @@user, food: food, quantity: quantity})
   end
 end
 
@@ -70,7 +78,7 @@ def topic?
     puts "What food do you want to ask about?"
     food = gets.chomp
     possible_foods = Food.all.map { |food| food.name }
-    until possible_foods.contain?(food)
+    until possible_foods.include?(food)
       puts "Please select a real food."
       food = gets.chomp
     end
@@ -88,14 +96,14 @@ def topic?
     puts "What meal do you want to ask about?"
     meal = gets.chomp
     possible_meals = Meal.all.map { |meal| meal.name }
-    until possible_meals.contain?(meal)
+    until possible_meals.include?(meal)
       puts "Please select a real meal."
       meal = gets.chomp
     end
 
     puts "What information would you like to know about #{meal}?"
     desired_info = gets.chomp
-    possible_info = Meal.column_names
+    possible_info = Food.column_names
     until possible_info.include?(desired_info)
       puts "Please ask for legitimate information."
       desired_info = gets.chomp
@@ -112,23 +120,30 @@ def topic?
     when "time"
       puts "Input a time."
       time = gets.chomp
-      user.suggest_meal_by_time(time)
+      @@user.suggest_meal_by_time(time)
     when "macros"
       puts "Input a macro."
       macro = gets.chomp
       puts "Input an amount."
       amount = gets.chomp
-      user.suggest_meal_by_macros(macro, amount)
+      @@user.suggest_meal_by_macros(macro, amount)
     when "calories"
       puts "Input a calorie amount."
       calorie_amount = gets.chomp
-      user.meal_request_based_on_calories(calorie_amount)
+      @@user.meal_request_based_on_calories(calorie_amount)
+    else
+      puts "Please enter a valid condition."
     end
   when "recommend course"
-
-
+    @@user.suggest_todays_meals
   else
     puts "Please put a legitimate choice."
   end
+end
 
+def run_command_line_interface
+  welcome
+  identify
+  set_up_user
+  topic?
 end
