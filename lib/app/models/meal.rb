@@ -90,6 +90,10 @@ class Meal < ActiveRecord::Base
     end
   end
 
+  def parse_category
+    self.category.split
+  end
+
   def what_category?
     array = self.category.split
     puts "#{self.name} should be eaten for " + array.join(' or ') + "."
