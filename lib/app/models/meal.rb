@@ -11,7 +11,6 @@ class Meal < ActiveRecord::Base
     end
   end
 
-
   def my_foods
    hash = {}
    ingredients = self.my_ingredients

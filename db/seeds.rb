@@ -10,15 +10,15 @@ meal3 = Meal.create({name: "Steak", category: "lunch dinner"})
 meal4 = Meal.create({name: "Pizza", category: "lunch"})
 
 food1 = Food.create({name: "Cheez", calories: 50, protein: 50, fats: 50, carbohydrates: 50, dairy: 1, vegetarian: 1,
-  vegan: 0, gluten: 0, halal: 0})
+  vegan: 0, gluten: 0, halal: 1})
 food2 = Food.create({name: "Tomato", calories: 10, protein: 10, fats: 2, carbohydrates: 10, dairy: 0, vegetarian: 1,
   vegan: 1, gluten: 0, halal: 1})
 food3 = Food.create({name: "Beef", calories: 100, protein: 100, fats: 100, carbohydrates: 10, dairy: 0, vegetarian: 0,
   vegan: 0, gluten: 0, halal: 0})
 food4 = Food.create({name: "Dough", calories: 10, protein: 10, fats: 10, carbohydrates: 80, dairy: 0, vegetarian: 1,
-  vegan: 1, gluten: 1, halal: 0})
+  vegan: 1, gluten: 1, halal: 1})
 food5 = Food.create({name: "Chicken", calories: 25, protein: 80, fats: 20, carbohydrates: 80, dairy: 0, vegetarian: 0,
-  vegan: 0, gluten: 0, halal: 1})
+  vegan: 0, gluten: 0, halal: 0})
 food6 = Food.create({name: "Egg", calories: 20, protein: 0, fats: 5, carbohydrates: 70, dairy: 0, vegetarian: 1,
   vegan: 1, gluten: 1, halal: 0})
 

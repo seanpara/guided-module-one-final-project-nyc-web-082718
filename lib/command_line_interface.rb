@@ -21,6 +21,21 @@ def identify
   set_up_user(new_or_not)
 end
 
+def set_up_user(new_or_not)
+  if new_or_not == "returning user"
+    puts "please enter your old ID"
+    id = gets.chomp
+    id_valid?(id)
+    puts "Welcome back #{user.name}".
+  elsif new_or_not == "new user"
+    user = User.create
+    puts "Please enter your information."
+    get_new_user_info(user)
+    puts "Your account has been successfully created. You used ID is #{user.id}. Please store it somewhere safe."
+    create_inventories(user)
+  end
+end
+
 def id_valid?(id)
   result = User.all.find { |user| user.id == id }
   if result == nil
@@ -50,21 +65,6 @@ def create_inventories(user)
       puts "Please enter a real number."
     end
     Inventory.create({user: user, food: food, quantity: quantity})
-  end
-end
-
-def set_up_user(new_or_not)
-  if new_or_not == "returning user"
-    puts "please enter your old ID"
-    id = gets.chomp
-    id_valid?(id)
-    puts "Welcome back #{user.name}".
-  elsif new_or_not == "new user"
-    user = User.create
-    puts "Please enter your information."
-    get_new_user_info(user)
-    puts "Your account has been successfully created. You used ID is #{user.id}. Please store it somewhere safe."
-    create_inventories(user)
   end
 end
 
@@ -114,7 +114,7 @@ def topic?
     # binding.pry
     actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
     # binding.pry
-    actual_meal.send("#{desired_info}")
+    x = actual_meal.send("#{desired_info}")
 
   when "recommend meal"
     puts "Would condition would you like your recommendation by?"
