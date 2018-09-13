@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
       end
       total_calories = meals.inject(0){|sum, meal| sum + meal.calories }
       times.each_with_index do |time, index|
-        puts "I've picked #{meals[index].name} for your #{time}?"
+        puts "I've picked #{meals[index].name} for your #{time}"
       end
       puts "This amounts to #{total_calories} calories for the day."
       puts "Your daily calorie limit is #{self.calorie_limit} calories."
