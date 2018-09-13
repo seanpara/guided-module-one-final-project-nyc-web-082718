@@ -128,3 +128,4 @@ def meal_recommendation(user)
       "#{option.name}"
     end
   end
+end
