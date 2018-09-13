@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
     has_many :meals, through: :favorites
 
     def eat_meal(meal)
+      prepare_meal(meal)
       self.calories_consumed += meal.calories
     end
 
@@ -56,11 +57,12 @@ class User < ActiveRecord::Base
       #reduce the number of items in each user's inventory by the amount of each food in the meal
       self.kitchen.each do |item|
         meal.my_ingredients.each do |ingredient|
-          if ingredient.food == item.food && item.quantity >= ingredient.quantity
-            new_quantity = item.quantity - ingredient.quantity
-            item.update(quantity: new_quantity)
-          elsif ingredient.food == item.food && item.quantity < ingredient.quantity
+          if ingredient.food == item.food && item.quantity < ingredient.quantity
             puts "Sorry the meal cannot be prepared"
+            break
+          elsif ingredient.food == item.food && item.quantity >= ingredient.quantity
+              new_quantity = item.quantity - ingredient.quantity
+              item.update(quantity: new_quantity)
             break
           end
         end
@@ -72,15 +74,16 @@ class User < ActiveRecord::Base
       Inventory.select { |item|  item.user == self }
     end
 
-    def available_meals
-      # medium : I want to be able enter my name and check which types of meals are vailable based on my inventory
-      #cross reference all meals against my kitchen
-    end
-
-    def neccessary_ingredients(meal)
-      # medium: I want to be able to know which ingredients I'm missing in ordered to make a specified meal
-      self.kitchen
-    end
+    # def available_meals
+    #   # medium : I want to be able enter my name and check which types of meals are vailable based on my inventory
+    #   #cross reference all meals against my kitchen
+    #   Meal.all.my
+    # end
+    #
+    # def neccessary_ingredients(meal)
+    #   # medium: I want to be able to know which ingredients I'm missing in ordered to make a specified meal
+    #   self.kitchen
+    # end
 
     # hard: I want to be able to find all the recipes I am only missing one ingredient for
 end
