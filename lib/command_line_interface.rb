@@ -60,10 +60,75 @@ end
 
 def topic?
   puts "What do you want to do?"
-  puts "Ask about a food."
-  puts "Ask about a meal."
-  puts "Ask for a meal recommmendation."
-  puts "Ask for an entire day's course reccomendation."
+  puts "To ask about a food type 'food'."
+  puts "To ask about a meal type 'meal'."
+  puts "For a meal recommendation type 'recommend meal'."
+  puts "For an entire day's course recommendation type 'recommend course'."
   answer = gets.chomp
+  case answer
+  when "food"
+    puts "What food do you want to ask about?"
+    food = gets.chomp
+    possible_foods = Food.all.map { |food| food.name }
+    until possible_foods.contain?(food)
+      puts "Please select a real food."
+      food = gets.chomp
+    end
+
+    puts "What information would you like to know about #{food}?"
+    desired_info = gets.chomp
+    possible_info = Food.column_names
+    until possible_info.include?(desired_info)
+      puts "Please ask for legitimate information."
+      desired_info = gets.chomp
+    end
+    food.send("#{desired_info}")
+
+  when "meal"
+    puts "What meal do you want to ask about?"
+    meal = gets.chomp
+    possible_meals = Meal.all.map { |meal| meal.name }
+    until possible_meals.contain?(meal)
+      puts "Please select a real meal."
+      meal = gets.chomp
+    end
+
+    puts "What information would you like to know about #{meal}?"
+    desired_info = gets.chomp
+    possible_info = Meal.column_names
+    until possible_info.include?(desired_info)
+      puts "Please ask for legitimate information."
+      desired_info = gets.chomp
+    end
+    meal.send("#{desired_info}")
+
+  when "recommend meal"
+    puts "Would condition would you like your recommendation by?"
+    puts "time"
+    puts "macros"
+    puts "calories"
+    recommendation_choice = gets.chomp
+    case recommendation_choice
+    when "time"
+      puts "Input a time."
+      time = gets.chomp
+      user.suggest_meal_by_time(time)
+    when "macros"
+      puts "Input a macro."
+      macro = gets.chomp
+      puts "Input an amount."
+      amount = gets.chomp
+      user.suggest_meal_by_macros(macro, amount)
+    when "calories"
+      puts "Input a calorie amount."
+      calorie_amount = gets.chomp
+      user.meal_request_based_on_calories(calorie_amount)
+    end
+  when "recommend course"
+
+
+  else
+    puts "Please put a legitimate choice."
+  end
 
 end

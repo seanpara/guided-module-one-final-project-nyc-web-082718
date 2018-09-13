@@ -68,7 +68,7 @@ inventory21 = Inventory.create({user: user5, food: food5, quantity: 99})
 inventory22 = Inventory.create({user: user5, food: food6, quantity: 99})
 
 # ingredient1 = Ingredient.create(meal1, food1, 2)
-ingredient1 = Ingredient.create({meal: meal1, food: food2, quantity: 3})
+ingredient1 = Ingredient.create({meal: meal1, food: food1, quantity: 3})
 # ingredient2 = Ingredient.create(meal1, food2, 2)
 ingredient2 = Ingredient.create({meal: meal1, food: food2, quantity: 2})
 # ingredient3 = Ingredient.create(meal1, food3, 1)
