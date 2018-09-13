@@ -16,7 +16,7 @@ def identify
   until @@new_or_not == "new user" || @@new_or_not == "returning user"
     puts "That is not a valid response. Please type 'new_user' or 'returning_user' exactly as shown."
     @@new_or_not = gets.chomp
-  new_or_not
+  end
 end
 
 def id_valid?(id)
@@ -145,6 +145,7 @@ def run_command_line_interface
   identify
   set_up_user
   topic?
+end
 
 
 # def meal_recommendation(user)
@@ -206,4 +207,3 @@ def run_command_line_interface
 #       "#{option.name}"
 #     end
 #   end
-end
