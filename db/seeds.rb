@@ -1,6 +1,6 @@
 user1 = User.create({name: "Peter", age: 30, calorie_limit: 2000})
 user2 = User.create({name: "Quagmire", age: 32, calorie_limit: 3000})
-user3 = User.create({name: "Jor", age: 31, calorie_limit: 2500})
+user3 = User.create({name: "Joe", age: 31, calorie_limit: 2500})
 user4 = User.create({name: "Cleaveland", age: 30, calorie_limit: 2000})
 user5 = User.create({name: "Louis", age: 28, calorie_limit: 1800})
 
