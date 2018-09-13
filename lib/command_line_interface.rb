@@ -15,35 +15,104 @@ def identify
   puts "Please answer 'new user' or 'returning user'"
   new_or_not = gets.chomp
   until new_or_not == "new user" || new_or_not == "returning user"
-    puts "That is not a valid response. Please type 'new_user' or 'returning_user' exactly as shown."
+    puts "That is not a valid response. Please type 'new user' or 'returning user' exactly as shown."
     new_or_not = gets.chomp
   end
-  set_up_user(new_or_not)
+  # set_up_user(new_or_not)
+  puts "Checking user status..."
+  check_user_status(new_or_not)
 end
 
-def set_up_user(new_or_not)
-  if new_or_not == "returning user"
-    puts "please enter your old ID"
-    id = gets.chomp
-    id_valid?(id)
-    puts "Welcome back #{user.name}".
-  elsif new_or_not == "new user"
-    user = User.create
+def check_user_status(status)
+  if status == "new user"
     puts "Please enter your information."
-    get_new_user_info(user)
-    puts "Your account has been successfully created. You used ID is #{user.id}. Please store it somewhere safe."
-    create_inventories(user)
+    puts "What is your name?"
+    name = gets.chomp
+    puts "What is your age?"
+    age = gets.chomp
+    while !age.to_i.is_a? Integer
+      puts "Ages are usually represented by numbers. What is your age?"
+      age = gets.chomp
+    end
+    age = age.to_i
+    puts "How many calories do you want to eat in a day?"
+    calorie_limit = gets.chomp
+    while calorie_limit.to_i == 0
+      puts "Calorie limits have to be expressed as numbers. What is your limit?"
+      calorie_limit = gets.chomp
+    end
+    calorie_limit = calorie_limit.to_i
+    puts "Thanks! Setting you up now."
+    User.create({name: name, age: age, calorie_limit: calorie_limit})
+  elsif status == "returning user"
+    puts "Please enter your User ID"
+    id = gets.chomp
+    id = id.to_i
+    while !id_valid?(id) || id == "new user"
+      puts "That is not a valid ID. Please enter a valid user ID, or enter 'new user' to set up a new account."
+      id = gets.chomp
+      id = id.to_i
+    end
+
+    puts "Welcome back, #{User.find_by(id: id).name}!"
   end
 end
+
+def new_user
+  puts "Please enter your information."
+  puts "What is your name?"
+  name = gets.chomp
+  puts "What is your age?"
+  age = gets.chomp
+  while !age.to_i.is_a? Integer
+    puts "Ages are usually represented by numbers. What is your age?"
+    age = gets.chomp
+  end
+  age = age.to_i
+  puts "How many calories do you want to eat in a day?"
+  calorie_limit = gets.chomp
+  while !calorie_limit.to_i.is_a? Integer && calorie_limit != 0
+    puts "Calorie limits have to be expressed as numbers. What is your limit?"
+    calorie_limit = gets.chomp
+  end
+  calorie_limit = calorie_limit.to_i
+  puts "Thanks! Setting you up now."
+  new_user = User.create({name: name, age: age, calore_limit: calorie_limit})
+  puts "Your account has been successfully created. Your user ID is #{new_user.id}. Please store it somewhere safe."
+end
+
+# def set_up_user(new_or_not)
+#   binding.pry
+#   if new_or_not == "returning user"
+#     puts "please enter your old ID"
+#     id = gets.chomp
+#     id_valid?(id)
+#     puts "Welcome back #{user.name}".
+#   elsif new_or_not == "new user"
+#     binding.pry
+#     user = User.create
+#     puts "Please enter your information."
+#     get_new_user_info(user)
+#     puts "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe."
+#     create_inventories(user)
+#   end
+# end
 
 def id_valid?(id)
-  result = User.all.find { |user| user.id == id }
-  if result == nil
-    puts "No user with that has been found. Start over and create a new account or enter a real ID dummy."
-  end
-  puts "ID has been approved."
-  true
+  User.all.find_by(id: id) != nil
 end
+
+# def id_valid?(id)
+#   result = User.all.find { |user| user.id == id }
+#   if result == nil
+#     puts "No user with that ID has been found. Start over and create a new account or enter a real ID dummy."
+#     input = gets.chomp
+#     id_valid?(input.to_i)
+#   else
+#     puts "ID has been approved."
+#     true
+#   end
+# end
 
 def get_new_user_info(user)
   puts "What is your name?"
@@ -147,11 +216,6 @@ def topic?
   end
 end
 
-def run_command_line_interface
-  welcome
-  identify
-  topic?
-end
 
 def meal_recommendation(user)
   puts "How do you want to pick a meal?"
@@ -215,6 +279,11 @@ def meal_recommendation(user)
   end
 end
 
+def run_command_line_interface
+  welcome
+  identify
+  topic?
+end
   # def continue_or_quit?
   #   puts "Do you want to continue or quit?"
   #   input == gets.chomp
