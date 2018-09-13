@@ -41,11 +41,13 @@ class User < ActiveRecord::Base
     def prepare_meal(meal)
       #  I should be able to prepare a meal and subtract the ingredients from my inventory
       #reduce the number of items in each user's inventory by the amount of each food in the meal
-      Inventory.all.each do |item|
-        if item.user == self && item.food == meal.food
-          item.quantity - meal.food.quantity
-        end
-      end
+
+      item.food == meal.food
+    end
+
+    def kitchen
+      Inventory.select { |item|  item.user == self }
+      # binding.pry
     end
 
     def available_meals
