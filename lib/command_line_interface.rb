@@ -7,10 +7,11 @@ def identify
   puts "Please answer 'yes' or 'no'"
   new_or_not = gets.chomp
 
-  until new_or_not == "yes" || new_or_not == "no"
+  until new_or_not.downcase == "yes" || new_or_not.downcase == "no"
     puts "That is not a valid response. Please type 'yes' or 'no' exactly as shown."
     new_or_not = gets.chomp
   end
+  new_or_not
 end
 
 def set_up_user
@@ -64,6 +65,66 @@ def topic?
   puts "Ask about a meal."
   puts "Ask for a meal recommmendation."
   puts "Ask for an entire day's course reccomendation."
+  puts "Update your inventory."
   answer = gets.chomp
-
 end
+
+def meal_recommendation(user)
+  puts "How do you want to pick a meal?"
+  puts "Please select 'calories','macros', or 'meal time'"
+  selection = gets.chomp
+
+  until selection in ['calories','macros','meal time']
+    puts "I can't recommend a meal based on that. Please select from 'calories', 'macros', or 'meal time'"
+    selection = gets.chomp
+  end
+
+  #meal rec based on calories
+  if selection == 'calories'
+    puts "What is the calorie limit for this meal?"
+    limit = gets.chomp.to_i
+    until limit.is_a? Integer
+      puts "I need a number to recommend based on calories. Please enter the calorie limit for this meal."
+      limit = gets.chomp
+    end
+    meal_options = user.meal_request_based_on_calories(limit)
+    puts "I can recommend the following meals to you:"
+    meal_options.map do |option|
+      puts "#{option.name}, a #{option.what_category?} meal with #{option.calories} calories"
+    end
+    #meal rec based on macros
+  elsif selection == 'macros'
+    puts "Which macro would you like to specify: protein, fats, or carbohydrates?"
+    macro = gets.chomp
+    until macro in ['protein','fats','carbohydrates']
+      puts "That's not a valid macro. Please pick from protein, fats, or carbohydrates."
+      macro = gets.chomp
+    end
+    puts "How many grams of #{macro} are you looking for?"
+    amount = gets.chomp.to_i
+    until amount.is_a? Integer
+      puts "I need a number amount of #{macro} to make a recommendation. How many grams would you like?"
+      amount = gets.chomp.to_i
+    end
+    meal_options = user.suggest_meal_by_macros(macro,amount)
+    puts "I can recommend the following meals to you:"
+    meal_options.map do |option|
+      puts "#{option.name}, a #{option.calories}-calorie #{option.what_category?} meal with:"
+      option.nutrients.each do |nutrient,amount|
+        puts "#{amount} grams of #{nutrient}"
+        puts "="*25
+      end
+    end
+  elsif selection == 'meal time'
+    puts "Which meal time do you want a suggestion for? Choose breakfast, lunch, or dinner"
+    meal_time = gets.chomp
+    until meal_time in ["breakfast","lunch","dinner"]
+      puts "That wasn't a valid selection. Choose breakfast, lunch, or dinner"
+      meal_time = gets.chomp
+    end
+    meal_options = user.suggest_meal_by_time
+    puts "I can recommend the following meals to you:"
+    meal_options.map do |option|
+      "#{option.name}"
+    end
+  end
