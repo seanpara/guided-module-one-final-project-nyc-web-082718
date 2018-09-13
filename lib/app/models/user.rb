@@ -26,6 +26,19 @@ class User < ActiveRecord::Base
       meal_array.map { |meal| meal.name }
     end
 
+    def suggest_todays_meals
+      times = ["breakfast","lunch","dinner"]
+      meals = times.map do |time|
+        suggest_meal_by_time(time).sample(1)[0]
+      end
+      total_calories = meals.inject(0){|sum, meal| sum + meal.calories }
+      times.each_with_index do |time, index|
+        puts "I've picked #{meals[index].name} for your #{time}"
+      end
+      puts "This amounts to #{total_calories} calories for the day."
+      puts "Your daily calorie limit is #{self.calorie_limit} calories."
+    end
+
     def add_meal_to_favorites(meal)
       #I want to be able to add a meal i like to my favorites list as well as remove them
 
