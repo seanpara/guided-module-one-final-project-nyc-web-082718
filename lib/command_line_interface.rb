@@ -90,7 +90,7 @@ def meal_recommendation(user)
     meal_options = user.meal_request_based_on_calories(limit)
     puts "I can recommend the following meals to you:"
     meal_options.map do |option|
-      puts "#{option.name}, a #{option.what_category?} meal with #{option.calories} calories"
+      puts "#{option.name}, a #{option.parse_category} meal with #{option.calories} calories"
     end
     #meal rec based on macros
   elsif selection == 'macros'
@@ -109,7 +109,7 @@ def meal_recommendation(user)
     meal_options = user.suggest_meal_by_macros(macro,amount)
     puts "I can recommend the following meals to you:"
     meal_options.map do |option|
-      puts "#{option.name}, a #{option.calories}-calorie #{option.what_category?} meal with:"
+      puts "#{option.name}, a #{option.calories}-calorie #{option.parse_category} meal with:"
       option.nutrients.each do |nutrient,amount|
         puts "#{amount} grams of #{nutrient}"
         puts "="*25
