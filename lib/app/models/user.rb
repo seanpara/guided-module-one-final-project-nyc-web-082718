@@ -46,8 +46,9 @@ class User < ActiveRecord::Base
           if ingredient.food == item.food && item.quantity >= ingredient.quantity
             new_quantity = item.quantity - ingredient.quantity
             item.update(quantity: new_quantity)
-          else
+          elsif ingredient.food == item.food && item.quantity < ingredient.quantity
             puts "Sorry the meal cannot be prepared"
+            break
           end
         end
       end
