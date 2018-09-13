@@ -93,7 +93,7 @@ def topic?
       desired_info = gets.chomp
     end
     actual_food = Food.all.find(food) { |food_object| food_object.name == food}
-    actual_food.send("#{desired_info}")
+    puts actual_food.send("#{desired_info}")
 
   when "meal"
     puts "What meal do you want to ask about?"
@@ -114,7 +114,7 @@ def topic?
     # binding.pry
     actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
     # binding.pry
-    x = actual_meal.send("#{desired_info}")
+    puts actual_meal.send("#{desired_info}")
 
   when "recommend meal"
     puts "Would condition would you like your recommendation by?"
