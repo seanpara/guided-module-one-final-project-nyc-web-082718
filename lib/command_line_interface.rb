@@ -53,8 +53,11 @@ def check_user_status(status)
       id = gets.chomp
       id = id.to_i
     end
-
-    puts "Welcome back, #{User.find_by(id: id).name}!"
+    if id == "new user"
+      new_user
+    else
+      puts "Welcome back, #{User.find_by(id: id).name}!"
+    end
   end
 end
 
