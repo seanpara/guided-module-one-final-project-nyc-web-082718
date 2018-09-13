@@ -54,10 +54,12 @@ def check_user_status(status)
       id = id.to_i
     end
     if id == "new user"
-      new_user
+      user = new_user
     else
-      puts "Welcome back, #{User.find_by(id: id).name}!"
+      user = User.find_by(id: id)
+      puts "Welcome back, #{user.name}!"
     end
+    user
   end
 end
 
@@ -82,6 +84,7 @@ def new_user
   puts "Thanks! Setting you up now."
   new_user = User.create({name: name, age: age, calore_limit: calorie_limit})
   puts "Your account has been successfully created. Your user ID is #{new_user.id}. Please store it somewhere safe."
+  new_user
 end
 
 # def set_up_user(new_or_not)
@@ -140,7 +143,7 @@ def create_inventories(user)
   end
 end
 
-def topic?
+def topic?(user)
   puts "What do you want to do?"
   puts "To ask about a food type 'food'."
   puts "To ask about a meal type 'meal'."
@@ -213,7 +216,7 @@ def topic?
       puts "Please enter a valid condition."
     end
   when "recommend course"
-    meal_recommendation(user)
+    user.suggest_todays_meals
   else
     puts "Please put a legitimate choice."
   end
@@ -274,7 +277,7 @@ def meal_recommendation(user)
       puts "That wasn't a valid selection. Choose breakfast, lunch, or dinner"
       meal_time = gets.chomp
     end
-    meal_options = user.suggest_meal_by_time
+    meal_options = user.suggest_meal_by_time(meal_time)
     puts "I can recommend the following meals to you:"
     meal_options.map do |option|
       "#{option.name}"
@@ -284,8 +287,8 @@ end
 
 def run_command_line_interface
   welcome
-  identify
-  topic?
+  user = identify
+  topic?(user)
 end
   # def continue_or_quit?
   #   puts "Do you want to continue or quit?"
