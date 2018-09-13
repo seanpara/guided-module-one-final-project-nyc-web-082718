@@ -33,5 +33,3 @@ run_command_line_interface
 # as a meal i want to be able to determine my calorie count based on the foods used in me
 
 # "https://github.com/toddmotto/public-apis#food--drink"
-
-ru
