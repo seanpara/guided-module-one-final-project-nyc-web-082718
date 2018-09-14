@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
     def suggest_meal_by_time(time)
       Meal.select do |meal|
         meal.category.include?(time)
+      end.each do |meal|
+        puts "I can recommend #{meal}, which is a #{time}."
       end
     end
 
