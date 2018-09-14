@@ -42,8 +42,10 @@ def check_user_status(status)
       calorie_limit = gets.chomp
     end
     calorie_limit = calorie_limit.to_i
+    puts "How many calories have you eaten so far?"
+    calories_so_far = gets.chomp
     puts "Thanks! Setting you up now."
-    User.create({name: name, age: age, calorie_limit: calorie_limit})
+    User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
   elsif status == "returning user"
     puts "Please enter your User ID"
     id = gets.chomp
@@ -81,8 +83,10 @@ def new_user
     calorie_limit = gets.chomp
   end
   calorie_limit = calorie_limit.to_i
+  puts "How many calories have you eaten so far?"
+  calories_so_far = gets.chomp
   puts "Thanks! Setting you up now."
-  new_user = User.create({name: name, age: age, calore_limit: calorie_limit})
+  new_user = User.create({name: name, age: age, calore_limit: calorie_limit, calories_consumed: calories_so_far})
   puts "Your account has been successfully created. Your user ID is #{new_user.id}. Please store it somewhere safe."
   new_user
 end
@@ -120,17 +124,17 @@ end
 #   end
 # end
 
-def get_new_user_info(user)
-  puts "What is your name?"
-  name = gets.chomp
-  user.name = name
-  puts "What is your age?"
-  age = gets.chomp
-  user.age = age
-  puts "What is your daily calorie_limit?"
-  calorie_limit = gets.chomp
-  user.calorie_limit = calorie_limit
-end
+# def get_new_user_info(user)
+#   puts "What is your name?"
+#   name = gets.chomp
+#   user.name = name
+#   puts "What is your age?"
+#   age = gets.chomp
+#   user.age = age
+#   puts "What is your daily calorie_limit?"
+#   calorie_limit = gets.chomp
+#   user.calorie_limit = calorie_limit
+# end
 
 def create_inventories(user)
   Food.all.each_with_index do |food, index|
@@ -145,78 +149,167 @@ end
 
 def topic?(user)
   puts "What do you want to do?"
-  puts "To ask about a food type 'food'."
-  puts "To ask about a meal type 'meal'."
-  puts "For a meal recommendation type 'recommend meal'."
-  puts "For an entire day's course recommendation type 'recommend course'."
+  puts "To update account type 'account'"
+  puts "For options about foods or meals type 'foods/meals"
+  puts "For options about favorites or inventory type 'inventory/favorites'"
+
   answer = gets.chomp
   case answer
-  when "food"
-    puts "What food do you want to ask about?"
-    food = gets.chomp
-    possible_foods = Food.all.map { |food_object| food_object.name }
-    until possible_foods.include?(food)
-      puts "Please select a real food."
+  when "account"
+    puts "What would you like to update?"
+    puts "name"
+    puts "age"
+    puts "calorie_limit"
+    puts "calories_consumed"
+    desired_update = gets.chomp
+    case desired_update
+    when "name"
+      puts "What would you like to change your #{desired_update} to?"
+      name = gets.chomp
+      # binding.pry
+      user.name = name
+    when "age"
+      puts "What would you like to change your #{desired_update} to?"
+      age = gets.chomp
+      user.age = age
+    when "calorie_limit"
+      puts "What would you like to change your #{desired_update} to?"
+      calorie_limit = gets.chomp
+      user.calorie_limit = calorie_limit
+    when "calories_consumed"
+      puts "What would you like to change your #{desired_update} to?"
+      calories_consumed = gets.chomp
+      user.calories_consumed = calories_consumed
+    end
+  when "foods/meals"
+    puts "To ask about a food type 'food'."
+    puts "To ask about a meal type 'meal'."
+    puts "For a meal recommendation type 'recommend meal'."
+    puts "For an entire day's course recommendation type 'recommend course'."
+    puts "To prepare a meal and eat type 'prepare meal'"
+    input = gets.chomp
+    case input
+    when "food"
+      puts "What food do you want to ask about?"
       food = gets.chomp
-    end
+      possible_foods = Food.all.map { |food_object| food_object.name }
+      until possible_foods.include?(food)
+        puts "Please select a real food."
+        food = gets.chomp
+      end
 
-    puts "What information would you like to know about #{food}?"
-    desired_info = gets.chomp
-    possible_info = Food.column_names
-    until possible_info.include?(desired_info)
-      puts "Please ask for legitimate information."
+      puts "What information would you like to know about #{food}?"
       desired_info = gets.chomp
-    end
-    actual_food = Food.all.find(food) { |food_object| food_object.name == food}
-    puts actual_food.send("#{desired_info}")
+      possible_info = Food.column_names
+      until possible_info.include?(desired_info)
+        puts "Please ask for legitimate information."
+        desired_info = gets.chomp
+      end
+      actual_food = Food.all.find(food) { |food_object| food_object.name == food}
+      puts actual_food.send("#{desired_info}")
 
-  when "meal"
-    puts "What meal do you want to ask about?"
-    meal = gets.chomp
-    possible_meals = Meal.all.map { |meal_object| meal_object.name }
-    until possible_meals.include?(meal)
-      puts "Please select a real meal."
+    when "meal"
+      puts "What meal do you want to ask about?"
       meal = gets.chomp
-    end
+      possible_meals = Meal.all.map { |meal_object| meal_object.name }
+      until possible_meals.include?(meal)
+        puts "Please select a real meal."
+        meal = gets.chomp
+      end
 
-    puts "What information would you like to know about #{meal}?"
-    desired_info = gets.chomp
-    possible_info = Food.column_names
-    until possible_info.include?(desired_info)
-      puts "Please ask for legitimate information."
+      puts "What information would you like to know about #{meal}?"
       desired_info = gets.chomp
-    end
-    # binding.pry
-    actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
-    # binding.pry
-    puts actual_meal.send("#{desired_info}")
+      possible_info = Food.column_names
+      until possible_info.include?(desired_info)
+        puts "Please ask for legitimate information."
+        desired_info = gets.chomp
+      end
+      # binding.pry
+      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      # binding.pry
+      puts actual_meal.send("#{desired_info}")
 
-  when "recommend meal"
-    puts "Would condition would you like your recommendation by?"
-    puts "time"
-    puts "macros"
-    puts "calories"
-    recommendation_choice = gets.chomp
-    case recommendation_choice
-    when "time"
-      puts "Input a time."
-      time = gets.chomp
-      user.suggest_meal_by_time(time)
-    when "macros"
-      puts "Input a macro."
-      macro = gets.chomp
-      puts "Input an amount."
-      amount = gets.chomp
-      user.suggest_meal_by_macros(macro, amount.to_i)
-    when "calories"
-      puts "Input a calorie amount."
-      calorie_amount = gets.chomp
-      user.meal_request_based_on_calories(calorie_amount)
-    else
-      puts "Please enter a valid condition."
+    when "recommend meal"
+      puts "Would condition would you like your recommendation by?"
+      puts "time"
+      puts "macros"
+      puts "calories"
+      recommendation_choice = gets.chomp
+      case recommendation_choice
+      when "time"
+        puts "Input a time."
+        time = gets.chomp
+        user.suggest_meal_by_time(time)
+      when "macros"
+        puts "Input a macro."
+        macro = gets.chomp
+        puts "Input an amount."
+        amount = gets.chomp
+        user.suggest_meal_by_macros(macro, amount.to_i)
+      when "calories"
+        puts "Input a calorie amount."
+        calorie_amount = gets.chomp
+        user.meal_request_based_on_calories(calorie_amount)
+      else
+        puts "Please enter a valid condition."
+      end
+
+    when "recommend course"
+      user.suggest_todays_meals
+
+    when "prepare meal"
+      puts "What meal would you like to prepare?"
+      meal = gets.chomp
+      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      # binding.pry
+      user.prepare_meal(actual_meal)
+      puts "Your meal is prepared."
+      # binding.pry
+      user.eat_meal(actual_meal)
+      puts "That was delcious!"
     end
-  when "recommend course"
-    user.suggest_todays_meals
+
+  when "inventory/favorites"
+    puts "To check your inventory type 'check inventory'"
+    puts "To add an item to your inventory type 'add inventory'"
+    puts "To check your list of favorite meals type 'check favorites'"
+    puts "To add a meal to your favorites type 'add favorite'"
+    puts "To remove a meal from your favorites type 'remove favorite'"
+    input = gets.chomp
+    case input
+    when "check inventory"
+      array = []
+      user.inventories.each do |inventory|
+        array << "#{inventory.food.name}:#{inventory.quantity}"
+      end
+      puts array.join
+      ############### should use user and food instead of user_id and food_id that way i can return list of foods and hteir quantities
+    when "add inventory"
+      puts "What item would you like to add?"
+      food_name = gets.chomp
+      puts "How many would you like to add?"
+      quantity = gets.chomp
+      actual_food = Food.all.find(food) { |food_object| food_object.name == food}
+      actual_inventory = Inventory.all.find(inventory) { |inventory| inventory == actual_food && inventory.user == user}
+      actual_inventory.quantity += quantity
+    when "check favorites"
+      array = []
+      user.favorites.each do |favorite|
+        array << "#{favorite.meal.name}"
+      end
+      puts array.join
+    when "add favorite"
+      puts "What meal would you like to add?"
+      meal = gets.chomp
+      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      user.add_meal_to_favorites(actual_meal)
+    when "remove favorite"
+      puts "What meal would you like to remove?"
+      puts "What meal would you like to add?"
+      meal = gets.chomp
+      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      user.delete_meal_from_favorites(actual_meal)
+    end
   else
     puts "Please put a legitimate choice."
   end
