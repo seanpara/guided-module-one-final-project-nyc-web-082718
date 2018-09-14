@@ -42,10 +42,11 @@ def check_user_status(status)
       calorie_limit = gets.chomp
     end
     calorie_limit = calorie_limit.to_i
-    puts "How many calories have you eaten so far?"
+    puts "How many calories have you consumed so far?"
     calories_so_far = gets.chomp
     puts "Thanks! Setting you up now."
     user = User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
+    puts "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe."
     create_inventories(user)
   elsif status == "returning user"
     puts "Please enter your User ID"
@@ -61,6 +62,10 @@ def check_user_status(status)
     else
       user = User.find_by(id: id)
       puts "Welcome back, #{user.name}!"
+      puts "How many calories have you consumed so far today?"
+      new_calories = gets.chomp
+      user.update(calories_consumed: new_calories)
+      binding.pry
     end
     user
   end
@@ -84,11 +89,11 @@ def new_user
     calorie_limit = gets.chomp
   end
   calorie_limit = calorie_limit.to_i
-  puts "How many calories have you eaten so far?"
+  puts "How many calories have you consumed so far?"
   calories_so_far = gets.chomp
   puts "Thanks! Setting you up now."
-  new_user = User.create({name: name, age: age, calore_limit: calorie_limit, calories_consumed: calories_so_far})
-  puts "Your account has been successfully created. Your user ID is #{new_user.id}. Please store it somewhere safe."
+  user = User.create({name: name, age: age, calore_limit: calorie_limit, calories_consumed: calories_so_far})
+  puts "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe."
   create_inventories(new_user)
   new_user
 end
@@ -445,6 +450,7 @@ def continue_or_quit?(user)
     if input == "yes"
       topic?(user)
     else
+      print "Thanks #{user.name}! Don't forget, your user ID is #{user.id}!"
       print "Enjoy your meals!"
     end
   end
