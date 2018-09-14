@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
     def suggest_meal_by_macros(macro, amount)
       Meal.select do |meal|
         meal.nutrients[macro] >= amount
+      end.each do |meal|
+        puts "I can recommend #{meal.name}, which has more than #{amount} grams of #{macro}."
       end
     end
 

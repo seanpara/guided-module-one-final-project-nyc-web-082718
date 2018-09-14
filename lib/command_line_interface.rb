@@ -207,7 +207,7 @@ def topic?(user)
       macro = gets.chomp
       puts "Input an amount."
       amount = gets.chomp
-      user.suggest_meal_by_macros(macro, amount)
+      user.suggest_meal_by_macros(macro, amount.to_i)
     when "calories"
       puts "Input a calorie amount."
       calorie_amount = gets.chomp
@@ -285,18 +285,22 @@ def meal_recommendation(user)
   end
 end
 
+def continue_or_quit?(user)
+  input = "yes"
+  while input == "yes"
+    puts "Do you want to do something else?"
+    input = gets.chomp
+    if input == "yes"
+      topic?(user)
+    else
+      print "Enjoy your meals!"
+    end
+  end
+end
+
 def run_command_line_interface
   welcome
   user = identify
   topic?(user)
+  continue_or_quit?(user)
 end
-  # def continue_or_quit?
-  #   puts "Do you want to continue or quit?"
-  #   input == gets.chomp
-  #   if input == "continue"
-  #     topic?
-  #   else
-  #     exit!
-  #   end
-#   # end
-# end
