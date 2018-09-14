@@ -160,7 +160,7 @@ def topic?(user)
   puts Paint[ "What do you want to do?", :blue , :bright]
   puts Paint[ "To update account type 'account'", :green , :bright]
   puts Paint[ "For options about foods type 'foods'", :green , :bright]
-  puts Paint[ "For options about meals type 'meals'"
+  puts Paint[ "For options about meals type 'meals'", :green, :bright]
   puts Paint[ "For options about favorites type 'favorites'", :green , :bright]
   puts Paint[ "For options about inventory type 'inventory'", :green , :bright]
 
@@ -357,7 +357,7 @@ def topic?(user)
       puts Paint[ "Here are all your favorite meals:", :green , :bright]
       # binding.pry
       Favorite.all.select{|favorite| favorite.user == user}.each do |favorite|
-        puts Paint[ favorite.meal.name, , :green , :bright]
+        puts Paint[ favorite.meal.name, :green , :bright]
     #  user.favorites.each do |favorite|
         # binding.pry
       #  puts Paint[ favorite.meal.name
