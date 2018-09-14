@@ -179,19 +179,23 @@ def topic?(user)
       puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       name = gets.chomp
       # binding.pry
-      user.name = name
+      user.update(name: name)
+      puts "Your name has been updated #{name}!"
     when "age"
       puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       age = gets.chomp
-      user.age = age
+      user.update(age: age)
+      puts "Your age has been updated #{user.name}!"
     when "calorie_limit"
       puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       calorie_limit = gets.chomp
-      user.calorie_limit = calorie_limit
+      user.update(calorie_limit: calorie_limit)
+      puts "Your calorie_limit has been updated #{user.name}!"
     when "calories_consumed"
       puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       calories_consumed = gets.chomp
-      user.calories_consumed = calories_consumed
+      user.update(calories_consumed: calories_consumed)
+      puts "Your calories_consumed has been updated #{user.name}!"
     when "delete"
       puts Paint[ "Are you sure you want to delete your account permanently? Enter 'yes' if so.", :red , :bright]
       answer = gets.chomp
@@ -204,10 +208,10 @@ def topic?(user)
     puts Paint[ "What do you want to do?", :green , :bright]
     puts Paint[ "To ask for a list of all available foods type 'list'.", :green , :bright]
     puts Paint[ "To ask about a food type 'ask'.", :green , :bright]
-    puts Paint[ "What food do you want to ask about?", :green , :bright]
     input = gets.chomp
     case input
     when "ask"
+      puts Paint[ "What food do you want to ask about?", :green , :bright]
       food = gets.chomp
       possible_foods = Food.all.map { |food_object| food_object.name }
       until possible_foods.include?(food)
@@ -364,7 +368,6 @@ def topic?(user)
       end
     when "add favorite"
       puts Paint[ "What meal would you like to add?", :green , :bright]
-      meal = gets.chomp
       actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
       actual_favorite = Favorite.all.find { |favorite| favorite.meal == actual_meal && favorite.user == user}
       # user.add_meal_to_favorites(actual_meal)
