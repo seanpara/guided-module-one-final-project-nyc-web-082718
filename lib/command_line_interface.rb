@@ -45,7 +45,8 @@ def check_user_status(status)
     puts "How many calories have you eaten so far?"
     calories_so_far = gets.chomp
     puts "Thanks! Setting you up now."
-    User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
+    user = User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
+    create_inventories(user)
   elsif status == "returning user"
     puts "Please enter your User ID"
     id = gets.chomp
@@ -88,6 +89,7 @@ def new_user
   puts "Thanks! Setting you up now."
   new_user = User.create({name: name, age: age, calore_limit: calorie_limit, calories_consumed: calories_so_far})
   puts "Your account has been successfully created. Your user ID is #{new_user.id}. Please store it somewhere safe."
+  create_inventories(new_user)
   new_user
 end
 
@@ -137,13 +139,15 @@ end
 # end
 
 def create_inventories(user)
+  # current_user = User.where(:user_id => user.id)
   Food.all.each_with_index do |food, index|
     puts "How many #{food.name} do you have?"
     quantity = gets.chomp
-    until quantity.class = Fixnum
+    until quantity.to_i.class == Fixnum
       puts "Please enter a real number."
     end
     Inventory.create({user: user, food: food, quantity: quantity})
+    binding.pry
   end
 end
 
@@ -161,6 +165,7 @@ def topic?(user)
     puts "age"
     puts "calorie_limit"
     puts "calories_consumed"
+    puts "delete"
     desired_update = gets.chomp
     case desired_update
     when "name"
@@ -180,6 +185,11 @@ def topic?(user)
       puts "What would you like to change your #{desired_update} to?"
       calories_consumed = gets.chomp
       user.calories_consumed = calories_consumed
+    when "delete"
+      puts "Are you sure you want to delete your account permanently? Enter 'yes if so.'"
+      answer = gets.chomp
+      user.destroy if answer.downcase == "yes"
+      binding.pry
     end
   when "foods/meals"
     puts "To ask about a food type 'food'."
