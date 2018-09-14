@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
       Meal.select do |meal|
         meal.category.include?(time)
       end.each do |meal|
-        puts "I can recommend #{meal}, which is a #{time}."
+        puts "I can recommend #{meal.name}, which is a #{time}."
       end
     end
 
@@ -27,8 +27,8 @@ class User < ActiveRecord::Base
 
     def meal_request_based_on_calories(calorie_amount)
       #I want to be able to enter a calorie amount and get a list of meals that are under that calorie level
-      meal_array = Meal.all.select {|meal| meal.calories < calorie_amount}
-      meal_array.map { |meal| meal.name }
+      meal_array = Meal.all.select {|meal| meal.calories < calorie_amount.to_i}
+      meal_array.map { |meal| puts "I can recommend #{meal.name}, which has #{meal.calories} calories."}
     end
 
     def suggest_todays_meals
