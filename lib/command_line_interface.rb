@@ -5,46 +5,48 @@ require_relative 'app/models/inventory.rb'
 require_relative 'app/models/meal.rb'
 require_relative 'app/models/user.rb'
 require_relative '../config/environment.rb'
+require 'paint'
+
 
 def welcome
-  puts "Welcome to the food recommendatron 3000."
+  puts Paint["Welcome to the food recommendatron 3000.", :blue, :bright]
 end
 
 def identify
-  puts "Are you a new user or a returning user?"
-  puts "Please answer 'new user' or 'returning user'"
+  puts Paint["Are you a new user or a returning user?", :green, :bright]
+  puts Paint["Please answer 'new user' or 'returning user'", :red, :bright]
   new_or_not = gets.chomp
   until new_or_not == "new user" || new_or_not == "returning user"
-    puts "That is not a valid response. Please type 'new user' or 'returning user' exactly as shown."
+    puts Paint["That is not a valid response. Please type 'new user' or 'returning user' exactly as shown.", :red, :bright]
     new_or_not = gets.chomp
   end
   # set_up_user(new_or_not)
-  puts "Checking user status..."
+  puts Paint["Checking user status...", :red, :bright]
   check_user_status(new_or_not)
 end
 
 def check_user_status(status)
   if status == "new user"
-    puts "Please enter your information."
-    puts "What is your name?"
+    puts Paint["Please enter your information.", :green, :bright]
+    puts Paint["What is your name?", :green, :bright]
     name = gets.chomp
-    puts "What is your age?"
+    puts Paint["What is your age?", :green, :bright]
     age = gets.chomp
     while !age.to_i.is_a? Integer
-      puts "Ages are usually represented by numbers. What is your age?"
+      puts Paint["Ages are usually represented by numbers. What is your age?", :red, :bright]
       age = gets.chomp
     end
     age = age.to_i
-    puts "How many calories do you want to eat in a day?"
+    puts Paint["How many calories do you want to eat in a day?", :green, :bright]
     calorie_limit = gets.chomp
     while calorie_limit.to_i == 0
-      puts "Calorie limits have to be expressed as numbers. What is your limit?"
+      puts Paint["Calorie limits have to be expressed as numbers. What is your limit?", :red, :bright]
       calorie_limit = gets.chomp
     end
     calorie_limit = calorie_limit.to_i
-    puts "How many calories have you eaten so far?"
+    puts Paint["How many calories have you eaten so far?", :green, :bright]
     calories_so_far = gets.chomp
-    puts "Thanks! Setting you up now."
+    puts Paint["Thanks! Setting you up now.", :organge, :bright]
     user = User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
     create_inventories(user)
   elsif status == "returning user"
