@@ -225,87 +225,94 @@ def topic?(user)
     input = gets.chomp
     case input
     when "ask meal"
-    puts "What meal do you want to ask about?"
-    meal = gets.chomp
-    possible_meals = Meal.all.map { |meal_object| meal_object.name }
-    until possible_meals.include?(meal)
-      puts "Please select a real meal."
+      puts "What meal do you want to ask about?"
       meal = gets.chomp
-    end
+      possible_meals = Meal.all.map { |meal_object| meal_object.name }
+      until possible_meals.include?(meal)
+        puts "Please select a real meal."
+        meal = gets.chomp
+      end
 
-    puts "What information would you like to know about #{meal}?"
-    desired_info = gets.chomp
-    possible_info = Food.column_names
-    until possible_info.include?(desired_info)
-      puts "Please ask for legitimate information."
+      puts "What information would you like to know about #{meal}?"
       desired_info = gets.chomp
-    end
-    # binding.pry
-    actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
-    # binding.pry
-    puts actual_meal.send("#{desired_info}")
-  when "list"
-    user.kitchen
-  when "update"
-    puts "Which meal would you like to update?"
-    meal = gets.chomp
-    actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
-    puts "What would you like to change?"
-    puts "To change name 'name'"
-    puts "To change category puts 'category'"
-    desired_update = gets.chomp
-    case desired_update
-    when "name"
-      puts "What would you like to rename this meal?"
-      new_name = gets.chomp
-      actual_meal.name = new_name
-    when "category"
-      puts "What would you like to change this meal's categories to?"
-      puts "Enter them in one line in lower case with spaces"
-      puts "ie: 'breakfast dinner'"
-      new_categories = gets.chomp
-      actual_meal.categories = new_categories
+      possible_info = Food.column_names
+      until possible_info.include?(desired_info)
+        puts "Please ask for legitimate information."
+        desired_info = gets.chomp
+      end
+      # binding.pry
+      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      # binding.pry
+      puts actual_meal.send("#{desired_info}")
+    when "list"
+      puts "Here are all the available meals:"
+      Meal.all.each do |meal|
+        puts meal.name
+      end
+    when "update"
+      puts "Which meal would you like to update?"
+      meal = gets.chomp
+      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      puts "What would you like to change?"
+      puts "To change name 'name'"
+      puts "To change category puts 'category'"
+      desired_update = gets.chomp
+      case desired_update
+      when "name"
+        puts "What would you like to rename this meal?"
+        new_name = gets.chomp
+        actual_meal.update(name: new_name)
+      when "category"
+        puts "What would you like to change this meal's categories to?"
+        puts "Enter them in one line in lower case with spaces"
+        puts "ie: 'breakfast dinner'"
+        new_categories = gets.chomp
+        actual_meal.update(category: new_categories)
+      end
     when "create"
-      puts "What would you liek to name this meal?"
+      puts "What would you like to name this meal?"
       name = gets.chomp
       puts "What are this meal's categories?"
       puts "Enter them in one line in lower case with spaces"
       puts "ie: 'breakfast dinner'"
       categories = gets.chomp
-      Meal.create({name: name, categories: categories})
+      Meal.create({name: name, category: categories})
     when "delete"
-      puts "Are you sure you want to delete this meal permanently? Enter 'yes' if so."
+      puts "Please enter the name of the meal you want to delete."
+      meal = gets.chomp
+      actual_meal = Meal.all.find{ |meal_object| meal_object.name == meal}
+      puts "Are you sure you want to delete #{actual_meal.name} permanently? Enter 'yes' if so."
       answer = gets.chomp
       if answer.downcase == "yes"
-        meal_to_delete = Meal.find_by(id: meal.id)
-        meal_to_delete.destroy
+        deleted_name = actual_meal.name
+        #meal_to_delete = Meal.find_by(id: actual_meal.id)
+        actual_meal.destroy
+        puts "#{deleted_name} has been removed from the database."
       end
-    end
-
-  when "recommend meal"
-    puts "Would condition would you like your recommendation by?"
-    puts "time"
-    puts "macros"
-    puts "calories"
-    recommendation_choice = gets.chomp
-    case recommendation_choice
-    when "time"
-      puts "Input a time."
-      time = gets.chomp
-      user.suggest_meal_by_time(time)
-    when "macros"
-      puts "Input a macro."
-      macro = gets.chomp
-      puts "Input an amount."
-      amount = gets.chomp
-      user.suggest_meal_by_macros(macro, amount.to_i)
-    when "calories"
-      puts "Input a calorie amount."
-      calorie_amount = gets.chomp
-      user.meal_request_based_on_calories(calorie_amount)
-    else
-      puts "Please enter a valid condition."
-    end
+    when "recommend meal"
+      puts "Would condition would you like your recommendation by?"
+      puts "time"
+      puts "macros"
+      puts "calories"
+      recommendation_choice = gets.chomp
+      case recommendation_choice
+      when "time"
+        puts "Input a time."
+        time = gets.chomp
+        user.suggest_meal_by_time(time)
+      when "macros"
+        puts "Input a macro."
+        macro = gets.chomp
+        puts "Input an amount."
+        amount = gets.chomp
+        user.suggest_meal_by_macros(macro, amount.to_i)
+      when "calories"
+        puts "Input a calorie amount."
+        calorie_amount = gets.chomp
+        user.meal_request_based_on_calories(calorie_amount)
+      else
+        puts "Please enter a valid condition."
+      end
 
     when "recommend course"
       user.suggest_todays_meals

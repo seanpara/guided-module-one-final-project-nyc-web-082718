@@ -7,9 +7,13 @@ def move_zeroes(array)
 end
 
 def two_sum(numbers, target)
+  index1 = 0
+  index2 = 0
+  sum = 0
   numbers.each_with_index do |number,index|
     binding.pry
-    if (number + numbers[index + 1]) == target
+    sum = number + numbers[index+1]
+    if sum == target.to_i
       index1 = index
       index2 = index1 + 1
     end
