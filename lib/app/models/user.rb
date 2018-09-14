@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
       Meal.select do |meal|
         meal.category.include?(time)
       end.each do |meal|
-        puts Paint[ "I can recommend #{meal.name}, which is a #{time}."
+        puts Paint[ "I can recommend #{meal.name}, which is a #{time}.", :green , :bright]
       end
     end
 
@@ -23,14 +23,14 @@ class User < ActiveRecord::Base
       Meal.select do |meal|
         meal.nutrients[macro] >= amount
       end.each do |meal|
-        puts Paint[ "I can recommend #{meal.name}, which has more than #{amount} grams of #{macro}."
+        puts Paint[ "I can recommend #{meal.name}, which has more than #{amount} grams of #{macro}.", :green , :bright]
       end
     end
 
     def meal_request_based_on_calories(calorie_amount)
       #I want to be able to enter a calorie amount and get a list of meals that are under that calorie level
       meal_array = Meal.all.select {|meal| meal.calories < calorie_amount.to_i}
-      meal_array.map { |meal| puts Paint[ "I can recommend #{meal.name}, which has #{meal.calories} calories."}
+      meal_array.map { |meal| puts Paint[ "I can recommend #{meal.name}, which has #{meal.calories} calories.", :green , :bright]}
     end
 
     def suggest_todays_meals
@@ -40,10 +40,10 @@ class User < ActiveRecord::Base
       end
       total_calories = meals.inject(0){|sum, meal| sum + meal.calories }
       times.each_with_index do |time, index|
-        puts Paint[ "I've picked #{meals[index].name} for your #{time}"
+        puts Paint[ "I've picked #{meals[index].name} for your #{time}", :green , :bright]
       end
-      puts Paint[ "This amounts to #{total_calories} calories for the day."
-      puts Paint[ "Your daily calorie limit is #{self.calorie_limit} calories."
+      puts Paint[ "This amounts to #{total_calories} calories for the day.", :green , :bright]
+      puts Paint[ "Your daily calorie limit is #{self.calorie_limit} calories.", :green , :bright]
     end
 
     def add_meal_to_favorites(meal)
@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
       self.kitchen.each do |item|
         meal.my_ingredients.each do |ingredient|
           if ingredient.food == item.food && item.quantity < ingredient.quantity
-            puts Paint[ "Sorry the meal cannot be prepared"
+            puts Paint[ "Sorry the meal cannot be prepared", :red , :bright]
             break
           elsif ingredient.food == item.food && item.quantity >= ingredient.quantity
               new_quantity = item.quantity - ingredient.quantity

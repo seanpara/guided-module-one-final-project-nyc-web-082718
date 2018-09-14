@@ -95,7 +95,7 @@ class Meal < ActiveRecord::Base
 
   def what_category?
     array = self.category.split
-    puts Paint[ "#{self.name} should be eaten for " + array.join(' or ') + "."
+    puts Paint[ "#{self.name} should be eaten for " + array.join(' or ') + ".", :green , :bright]
   end
 
 end
