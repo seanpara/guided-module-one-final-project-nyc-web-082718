@@ -8,53 +8,53 @@ require_relative '../config/environment.rb'
 require 'paint'
 
 def welcome
-  puts Paint[ "Welcome to the food recommendatron 3000."
+  puts Paint[ "Welcome to the food recommendatron 3000.", :blue, :bright]
 end
 
 def identify
-  puts Paint[ "Are you a new user or a returning user?"
-  puts Paint[ "Please answer 'new user' or 'returning user'"
+  puts Paint[ "Are you a new user or a returning user?", :green , :bright]
+  puts Paint[ "Please answer 'new user' or 'returning user'", :green , :bright]
   new_or_not = gets.chomp
   until new_or_not == "new user" || new_or_not == "returning user"
-    puts Paint[ "That is not a valid response. Please type 'new user' or 'returning user' exactly as shown."
+    puts Paint[ "That is not a valid response. Please type 'new user' or 'returning user' exactly as shown.", :red , :bright]
     new_or_not = gets.chomp
   end
   # set_up_user(new_or_not)
-  puts Paint[ "Checking user status..."
+  puts Paint[ "Checking user status...", :yellow , :bright]
   check_user_status(new_or_not)
 end
 
 def check_user_status(status)
   if status == "new user"
-    puts Paint[ "Please enter your information."
-    puts Paint[ "What is your name?"
+    puts Paint[ "Please enter your information.", :green , :bright]
+    puts Paint[ "What is your name?", :green , :bright]
     name = gets.chomp
-    puts Paint[ "What is your age?"
+    puts Paint[ "What is your age?", :green , :bright]
     age = gets.chomp
     while !age.to_i.is_a? Integer
-      puts Paint[ "Ages are usually represented by numbers. What is your age?"
+      puts Paint[ "Ages are usually represented by numbers. What is your age?", :red , :bright]
       age = gets.chomp
     end
     age = age.to_i
-    puts Paint[ "How many calories do you want to eat in a day?"
+    puts Paint[ "How many calories do you want to eat in a day?", :green , :bright]
     calorie_limit = gets.chomp
     while calorie_limit.to_i == 0
-      puts Paint[ "Calorie limits have to be expressed as numbers. What is your limit?"
+      puts Paint[ "Calorie limits have to be expressed as numbers. What is your limit?", :red , :bright]
       calorie_limit = gets.chomp
     end
     calorie_limit = calorie_limit.to_i
-    puts Paint[ "How many calories have you consumed so far?"
+    puts Paint[ "How many calories have you consumed so far?", :green , :bright]
     calories_so_far = gets.chomp
-    puts Paint[ "Thanks! Setting you up now."
+    puts Paint[ "Thanks! Setting you up now.", :yellow , :bright]
     user = User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
-    puts Paint[ "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe."
+    puts Paint[ "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe.", :blue , :bright]
     create_inventories(user)
   elsif status == "returning user"
-    puts Paint[ "Please enter your User ID"
+    puts Paint[ "Please enter your User ID", :green , :bright]
     id = gets.chomp
     id = id.to_i
     while !id_valid?(id) || id == "new user"
-      puts Paint[ "That is not a valid ID. Please enter a valid user ID, or enter 'new user' to set up a new account."
+      puts Paint[ "That is not a valid ID. Please enter a valid user ID, or enter 'new user' to set up a new account.", :red , :bright]
       id = gets.chomp
       id = id.to_i
     end
@@ -62,8 +62,8 @@ def check_user_status(status)
       user = new_user
     else
       user = User.find_by(id: id)
-      puts Paint[ "Welcome back, #{user.name}!"
-      puts Paint[ "How many calories have you consumed so far today?"
+      puts Paint[ "Welcome back, #{user.name}!", :blue , :bright]
+      puts Paint[ "How many calories have you consumed so far today?", :green , :bright]
       new_calories = gets.chomp
       user.update(calories_consumed: new_calories)
     end
@@ -72,28 +72,28 @@ def check_user_status(status)
 end
 
 def new_user
-  puts Paint[ "Please enter your information."
-  puts Paint[ "What is your name?"
+  puts Paint[ "Please enter your information.", :green , :bright]
+  puts Paint[ "What is your name?", :green , :bright]
   name = gets.chomp
-  puts Paint[ "What is your age?"
+  puts Paint[ "What is your age?", :green , :bright]
   age = gets.chomp
   while !age.to_i.is_a? Integer
-    puts Paint[ "Ages are usually represented by numbers. What is your age?"
+    puts Paint[ "Ages are usually represented by numbers. What is your age?", :red , :bright]
     age = gets.chomp
   end
   age = age.to_i
-  puts Paint[ "How many calories do you want to eat in a day?"
+  puts Paint[ "How many calories do you want to eat in a day?", :green , :bright]
   calorie_limit = gets.chomp
   while !calorie_limit.to_i.is_a? Integer && calorie_limit != 0
-    puts Paint[ "Calorie limits have to be expressed as numbers. What is your limit?"
+    puts Paint[ "Calorie limits have to be expressed as numbers. What is your limit?", :red , :bright]
     calorie_limit = gets.chomp
   end
   calorie_limit = calorie_limit.to_i
-  puts Paint[ "How many calories have you consumed so far?"
+  puts Paint[ "How many calories have you consumed so far?", :green , :bright]
   calories_so_far = gets.chomp
-  puts Paint[ "Thanks! Setting you up now."
+  puts Paint[ "Thanks! Setting you up now.", :yellow , :bright]
   user = User.create({name: name, age: age, calore_limit: calorie_limit, calories_consumed: calories_so_far})
-  puts Paint[ "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe."
+  puts Paint[ "Your account has been successfully created. Your user ID is #{user.id}. Please store it somewhere safe.", :blue , :bright]
   create_inventories(new_user)
   new_user
 end
@@ -145,10 +145,10 @@ end
 
 def create_inventories(user)
   Food.all.each_with_index do |food, index|
-    puts Paint[ "How many #{food.name} do you have?"
+    puts Paint[ "How many #{food.name} do you have?", :green , :bright]
     quantity = gets.chomp
     until quantity.to_i.class == Fixnum
-      puts Paint[ "Please enter a real number."
+      puts Paint[ "Please enter a real number.", :red , :bright]
     end
     Inventory.create({user: user, food: food, quantity: quantity})
     # binding.pry
@@ -157,43 +157,43 @@ def create_inventories(user)
 end
 
 def topic?(user)
-  puts Paint[ "What do you want to do?"
-  puts Paint[ "To update account type 'account'"
-  puts Paint[ "For options about foods type 'foods'"
+  puts Paint[ "What do you want to do?", :blue , :bright]
+  puts Paint[ "To update account type 'account'", :green , :bright]
+  puts Paint[ "For options about foods type 'foods'", :green , :bright]
   puts Paint[ "For options about meals type 'meals'"
-  puts Paint[ "For options about favorites type 'favorites'"
-  puts Paint[ "For options about inventory type 'inventory'"
+  puts Paint[ "For options about favorites type 'favorites'", :green , :bright]
+  puts Paint[ "For options about inventory type 'inventory'", :green , :bright]
 
   answer = gets.chomp
   case answer
   when "account"
-    puts Paint[ "What would you like to update?"
-    puts Paint[ "name"
-    puts Paint[ "age"
-    puts Paint[ "calorie_limit"
-    puts Paint[ "calories_consumed"
-    puts Paint[ "delete"
+    puts Paint[ "What would you like to update?", :blue , :bright]
+    puts Paint[ "name", :green , :bright]
+    puts Paint[ "age", :green , :bright]
+    puts Paint[ "calorie_limit", :green , :bright]
+    puts Paint[ "calories_consumed", :green , :bright]
+    puts Paint[ "delete", :red , :bright]
     desired_update = gets.chomp
     case desired_update
     when "name"
-      puts Paint[ "What would you like to change your #{desired_update} to?"
+      puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       name = gets.chomp
       # binding.pry
       user.name = name
     when "age"
-      puts Paint[ "What would you like to change your #{desired_update} to?"
+      puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       age = gets.chomp
       user.age = age
     when "calorie_limit"
-      puts Paint[ "What would you like to change your #{desired_update} to?"
+      puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       calorie_limit = gets.chomp
       user.calorie_limit = calorie_limit
     when "calories_consumed"
-      puts Paint[ "What would you like to change your #{desired_update} to?"
+      puts Paint[ "What would you like to change your #{desired_update} to?", :green , :bright]
       calories_consumed = gets.chomp
       user.calories_consumed = calories_consumed
     when "delete"
-      puts Paint[ "Are you sure you want to delete your account permanently? Enter 'yes' if so."
+      puts Paint[ "Are you sure you want to delete your account permanently? Enter 'yes' if so.", :red , :bright]
       answer = gets.chomp
       if answer.downcase == "yes"
         user_to_delete = User.find_by(id: user.id)
@@ -201,75 +201,75 @@ def topic?(user)
       end
     end
   when "foods"
-    puts Paint[ "What do you want to do?"
-    puts Paint[ "To ask for a list of all available foods type 'list'."
-    puts Paint[ "To ask about a food type 'ask'."
-    puts Paint[ "What food do you want to ask about?"
+    puts Paint[ "What do you want to do?", :green , :bright]
+    puts Paint[ "To ask for a list of all available foods type 'list'.", :green , :bright]
+    puts Paint[ "To ask about a food type 'ask'.", :green , :bright]
+    puts Paint[ "What food do you want to ask about?", :green , :bright]
     input = gets.chomp
     case input
     when "ask"
       food = gets.chomp
       possible_foods = Food.all.map { |food_object| food_object.name }
       until possible_foods.include?(food)
-        puts Paint[ "Please select a real food."
+        puts Paint[ "Please select a real food.", :red , :bright]
         food = gets.chomp
       end
 
-      puts Paint[ "What information would you like to know about #{food}?"
+      puts Paint[ "What information would you like to know about #{food}?", :green , :bright]
       desired_info = gets.chomp
       possible_info = Food.column_names
       until possible_info.include?(desired_info)
-        puts Paint[ "Please ask for legitimate information."
+        puts Paint[ "Please ask for legitimate information.", :red , :bright]
         desired_info = gets.chomp
       end
       actual_food = Food.all.find(food) { |food_object| food_object.name == food}
-      puts Paint[ actual_food.send("#{desired_info}")
+      puts Paint[ actual_food.send("#{desired_info}") , :green , :bright]
 
     when "list"
-      puts Paint[ "Here are all the available foods:"
+      puts Paint[ "Here are all the available foods:", :green , :bright]
       Food.all.each do |food|
-        puts Paint[ food.name
+        puts Paint[ food.name , :green , :bright]
       end
     end
 
   when "meals"
-    puts Paint[ "To ask about a meal type 'ask meal'"
-    puts Paint[ "To list all available meals type 'list'"
-    puts Paint[ "To update a meal type 'update'"
-    puts Paint[ "To create a meal type 'create'"
-    puts Paint[ "To delete a meal type 'delete'"
-    puts Paint[ "For a meal recommendation type 'recommend meal'."
-    puts Paint[ "For an entire day's course recommendation type 'recommend course'."
-    puts Paint[ "To prepare a meal and eat type 'prepare meal'"
+    puts Paint[ "To ask about a meal type 'ask meal'", :green , :bright]
+    puts Paint[ "To list all available meals type 'list'", :green , :bright]
+    puts Paint[ "To update a meal type 'update'", :green , :bright]
+    puts Paint[ "To create a meal type 'create'", :green , :bright]
+    puts Paint[ "To delete a meal type 'delete'", :red , :bright]
+    puts Paint[ "For a meal recommendation type 'recommend meal'.", :green , :bright]
+    puts Paint[ "For an entire day's course recommendation type 'recommend , :green , :bright]course'.", :green , :bright]
+    puts Paint[ "To prepare a meal and eat type 'prepare meal'", :green , :bright]
     input = gets.chomp
     case input
     when "ask meal"
-      puts Paint[ "What meal do you want to ask about?"
+      puts Paint[ "What meal do you want to ask about?", :green , :bright]
       meal = gets.chomp
       possible_meals = Meal.all.map { |meal_object| meal_object.name }
       until possible_meals.include?(meal)
-        puts Paint[ "Please select a real meal."
+        puts Paint[ "Please select a real meal.", :red , :bright]
         meal = gets.chomp
       end
 
-      puts Paint[ "What information would you like to know about #{meal}?"
+      puts Paint[ "What information would you like to know about #{meal}?", :green , :bright]
       desired_info = gets.chomp
       possible_info = Food.column_names
       until possible_info.include?(desired_info)
-        puts Paint[ "Please ask for legitimate information."
+        puts Paint[ "Please ask for legitimate information.", :red , :bright]
         desired_info = gets.chomp
       end
       # binding.pry
       actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
       # binding.pry
-      puts Paint[ actual_meal.send("#{desired_info}")
+      puts Paint[ actual_meal.send("#{desired_info}"), :green , :bright]
     when "list"
-      puts Paint[ "Here are all the available meals:"
+      puts Paint[ "Here are all the available meals:", :green , :bright]
       Meal.all.each do |meal|
-        puts Paint[ meal.name
+        puts Paint[ meal.name, :green , :bright]
       end
     when "update"
-      puts Paint[ "Which meal would you like to update?"
+      puts Paint[ "Which meal would you like to update?", :green , :bright]
       meal = gets.chomp
       actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
       puts Paint[ "What would you like to change?"
