@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
     def eat_meal(meal)
       prepare_meal(meal)
+      binding.pry
+
       self.calories_consumed += meal.calories
     end
 

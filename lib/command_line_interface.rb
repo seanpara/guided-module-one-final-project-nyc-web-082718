@@ -45,7 +45,7 @@ def check_user_status(status)
     puts "How many calories have you eaten so far?"
     calories_so_far = gets.chomp
     puts "Thanks! Setting you up now."
-    User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far})
+    User.create({name: name, age: age, calorie_limit: calorie_limit, calories_consumed: calories_so_far.to_i})
   elsif status == "returning user"
     puts "Please enter your User ID"
     id = gets.chomp
@@ -150,7 +150,7 @@ end
 def topic?(user)
   puts "What do you want to do?"
   puts "To update account type 'account'"
-  puts "For options about foods or meals type 'foods/meals"
+  puts "For options about foods or meals type 'foods/meals'"
   puts "For options about favorites or inventory type 'inventory/favorites'"
 
   answer = gets.chomp
@@ -280,7 +280,7 @@ def topic?(user)
     when "check inventory"
       array = []
       user.inventories.each do |inventory|
-        array << "#{inventory.food.name}:#{inventory.quantity}"
+        array << "#{inventory.food.name}:#{inventory.quantity} "
       end
       puts array.join
       ############### should use user and food instead of user_id and food_id that way i can return list of foods and hteir quantities
