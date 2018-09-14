@@ -65,7 +65,6 @@ def check_user_status(status)
       puts "How many calories have you consumed so far today?"
       new_calories = gets.chomp
       user.update(calories_consumed: new_calories)
-      binding.pry
     end
     user
   end
@@ -159,9 +158,10 @@ end
 def topic?(user)
   puts "What do you want to do?"
   puts "To update account type 'account'"
-  puts "For options about foods 'foods'"
-  puts "For options about foods 'meals'"
-  puts "For options about favorites or inventory type 'inventory/favorites'"
+  puts "For options about foods type 'foods'"
+  puts "For options about meals type 'meals'"
+  puts "For options about favorites type 'favorites'"
+  puts "For options about inventory type 'inventory'"
 
   answer = gets.chomp
   case answer
@@ -200,23 +200,36 @@ def topic?(user)
       end
     end
   when "foods"
+    puts "What do you want to do?"
+    puts "To ask for a list of all available foods type 'list'."
+    puts "To ask about a food type 'ask'."
     puts "What food do you want to ask about?"
-    food = gets.chomp
-    possible_foods = Food.all.map { |food_object| food_object.name }
-    until possible_foods.include?(food)
-      puts "Please select a real food."
+    input = gets.chomp
+    case input
+    when "ask"
       food = gets.chomp
-    end
+      possible_foods = Food.all.map { |food_object| food_object.name }
+      until possible_foods.include?(food)
+        puts "Please select a real food."
+        food = gets.chomp
+      end
 
-    puts "What information would you like to know about #{food}?"
-    desired_info = gets.chomp
-    possible_info = Food.column_names
-    until possible_info.include?(desired_info)
-      puts "Please ask for legitimate information."
+      puts "What information would you like to know about #{food}?"
       desired_info = gets.chomp
+      possible_info = Food.column_names
+      until possible_info.include?(desired_info)
+        puts "Please ask for legitimate information."
+        desired_info = gets.chomp
+      end
+      actual_food = Food.all.find(food) { |food_object| food_object.name == food}
+      puts actual_food.send("#{desired_info}")
+
+    when "list"
+      puts "Here are all the available foods:"
+      Food.all.each do |food|
+        puts food.name
+      end
     end
-    actual_food = Food.all.find(food) { |food_object| food_object.name == food}
-    puts actual_food.send("#{desired_info}")
 
   when "meals"
     puts "To ask about a meal type 'ask meal'"
@@ -333,46 +346,49 @@ def topic?(user)
       user.eat_meal(actual_meal)
       puts "That was delcious!"
     end
-
-  when "inventory/favorites"
-    puts "To check your inventory type 'check inventory'"
-    puts "To add an item to your inventory type 'add inventory'"
+  when "favorites"
     puts "To check your list of favorite meals type 'check favorites'"
     puts "To add a meal to your favorites type 'add favorite'"
     puts "To remove a meal from your favorites type 'remove favorite'"
     input = gets.chomp
     case input
-    when "check inventory"
-      array = []
-      user.inventories.each do |inventory|
-        array << "#{inventory.food.name}:#{inventory.quantity} "
-      end
-      puts array.join
-    when "add inventory"
-      puts "What item would you like to add?"
-      food_name = gets.chomp
-      puts "How many would you like to add?"
-      quantity = gets.chomp
-      actual_food = Food.all.find(food) { |food_object| food_object.name == food}
-      actual_inventory = Inventory.all.find(inventory) { |inventory| inventory == actual_food && inventory.user == user}
-      actual_inventory.quantity += quantity
     when "check favorites"
-      array = []
+      puts "Here are all your favorite meals:"
       user.favorites.each do |favorite|
-        array << "#{favorite.meal.name}"
+        puts favorite.meal.name
       end
-      puts array.join
     when "add favorite"
       puts "What meal would you like to add?"
       meal = gets.chomp
-      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
       user.add_meal_to_favorites(actual_meal)
     when "remove favorite"
       puts "What meal would you like to remove?"
-      puts "What meal would you like to add?"
       meal = gets.chomp
-      actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
+      binding.pry
+      actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
       user.delete_meal_from_favorites(actual_meal)
+    end
+  when "inventory"
+    puts "To check your inventory type 'check inventory'"
+    puts "To add an item to your inventory type 'add inventory'"
+    input = gets.chomp
+    case input
+    when "check inventory"
+      puts "Here are all of the items in your inventory:"
+      user.inventories.each do |inventory|
+        puts "#{inventory.food.name}:#{inventory.quantity} "
+      end
+    when "add inventory"
+      puts "What item would you like to add?"
+      food = gets.chomp
+      puts "How many would you like to add?"
+      amount = gets.chomp.to_i
+      # binding.pry
+      actual_food = Food.all.find { |food_object| food_object.name == food}
+      actual_inventory = Inventory.all.find { |inventory| inventory.food == actual_food && inventory.user == user}
+      new_number = actual_inventory.quantity + amount
+      actual_inventory.update(quantity: new_number)
     end
   else
     puts "Please put a legitimate choice."
