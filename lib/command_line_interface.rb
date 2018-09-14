@@ -354,18 +354,24 @@ def topic?(user)
     case input
     when "check favorites"
       puts "Here are all your favorite meals:"
-      user.favorites.each do |favorite|
+      # binding.pry
+      Favorite.all.select{|favorite| favorite.user == user}.each do |favorite|
         puts favorite.meal.name
+    #  user.favorites.each do |favorite|
+        # binding.pry
+      #  puts favorite.meal.name
       end
     when "add favorite"
       puts "What meal would you like to add?"
       meal = gets.chomp
       actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
+      actual_favorite = Favorite.all.find { |favorite| favorite.meal == actual_meal && favorite.user == user}
+      # user.add_meal_to_favorites(actual_meal)
+      binding.pry
       user.add_meal_to_favorites(actual_meal)
     when "remove favorite"
       puts "What meal would you like to remove?"
       meal = gets.chomp
-      binding.pry
       actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
       user.delete_meal_from_favorites(actual_meal)
     end
@@ -376,7 +382,7 @@ def topic?(user)
     case input
     when "check inventory"
       puts "Here are all of the items in your inventory:"
-      user.inventories.each do |inventory|
+      user.kitchen.each do |inventory|
         puts "#{inventory.food.name}:#{inventory.quantity} "
       end
     when "add inventory"

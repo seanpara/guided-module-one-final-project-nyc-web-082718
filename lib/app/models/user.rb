@@ -54,7 +54,8 @@ class User < ActiveRecord::Base
 
     def delete_meal_from_favorites(meal)
 
-      meal_to_delete = Favorite.find_by(meal_id: meal.id)
+      # meal_to_delete = Favorite.find_by(meal_id: meal.id)
+      meal_to_delete = Favorite.all.find { |favorite| favorite.meal == self}
       meal_to_delete.destroy
     end
 
@@ -77,7 +78,7 @@ class User < ActiveRecord::Base
     end
 
     def kitchen
-      Inventory.select { |item|  item.user == self }
+      Inventory.all.select { |item|  item.user == self }
     end
 
     # def available_meals
