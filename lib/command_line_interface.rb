@@ -272,98 +272,98 @@ def topic?(user)
       puts Paint[ "Which meal would you like to update?", :green , :bright]
       meal = gets.chomp
       actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
-      puts Paint[ "What would you like to change?"
-      puts Paint[ "To change name 'name'"
-      puts Paint[ "To change category puts Paint[ 'category'"
+      puts Paint[ "What would you like to change?", :green , :bright]
+      puts Paint[ "To change name 'name'", :green , :bright]
+      puts Paint[ "To change category puts Paint[ 'category'", :green , :bright]
       desired_update = gets.chomp
       case desired_update
       when "name"
-        puts Paint[ "What would you like to rename this meal?"
+        puts Paint[ "What would you like to rename this meal?", :green , :bright]
         new_name = gets.chomp
         actual_meal.update(name: new_name)
       when "category"
-        puts Paint[ "What would you like to change this meal's categories to?"
-        puts Paint[ "Enter them in one line in lower case with spaces"
-        puts Paint[ "ie: 'breakfast dinner'"
+        puts Paint[ "What would you like to change this meal's categories to?", :green , :bright]
+        puts Paint[ "Enter them in one line n lower case with spaces", :green , :bright]
+        puts Paint[ "ie: 'breakfast dinner'", :green , :bright]
         new_categories = gets.chomp
         actual_meal.update(category: new_categories)
       end
     when "create"
-      puts Paint[ "What would you like to name this meal?"
+      puts Paint[ "What would you like to name this meal?", :green , :bright]
       name = gets.chomp
-      puts Paint[ "What are this meal's categories?"
-      puts Paint[ "Enter them in one line in lower case with spaces"
-      puts Paint[ "ie: 'breakfast dinner'"
+      puts Paint[ "What are this meal's categories?", :green , :bright]
+      puts Paint[ "Enter them in one line in lower case with spaces", :green , :bright]
+      puts Paint[ "ie: 'breakfast dinner'", :green , :bright]
       categories = gets.chomp
       Meal.create({name: name, category: categories})
     when "delete"
-      puts Paint[ "Please enter the name of the meal you want to delete."
+      puts Paint[ "Please enter the name of the meal you want to delete.", :green , :bright]
       meal = gets.chomp
       actual_meal = Meal.all.find{ |meal_object| meal_object.name == meal}
-      puts Paint[ "Are you sure you want to delete #{actual_meal.name} permanently? Enter 'yes' if so."
+      puts Paint[ "Are you sure you want to delete #{actual_meal.name} permanently? Enter 'yes' if so.", :red, :bright]
       answer = gets.chomp
       if answer.downcase == "yes"
         deleted_name = actual_meal.name
         #meal_to_delete = Meal.find_by(id: actual_meal.id)
         actual_meal.destroy
-        puts Paint[ "#{deleted_name} has been removed from the database."
+        puts Paint[ "#{deleted_name} has been removed from the database.", :yellow , :bright]
       end
     when "recommend meal"
-      puts Paint[ "Would condition would you like your recommendation by?"
-      puts Paint[ "time"
-      puts Paint[ "macros"
-      puts Paint[ "calories"
+      puts Paint[ "Would condition would you like your recommendation by?", :green , :bright]
+      puts Paint[ "time", :green , :bright]
+      puts Paint[ "macros", :green , :bright]
+      puts Paint[ "calories", :green , :bright]
       recommendation_choice = gets.chomp
       case recommendation_choice
       when "time"
-        puts Paint[ "Input a time."
+        puts Paint[ "Input a time.", :green , :bright]
         time = gets.chomp
         user.suggest_meal_by_time(time)
       when "macros"
-        puts Paint[ "Input a macro."
+        puts Paint[ "Input a macro.", :green , :bright]
         macro = gets.chomp
-        puts Paint[ "Input an amount."
+        puts Paint[ "Input an amount.", :green , :bright]
         amount = gets.chomp
         user.suggest_meal_by_macros(macro, amount.to_i)
       when "calories"
-        puts Paint[ "Input a calorie amount."
+        puts Paint[ "Input a calorie amount.", :green , :bright]
         calorie_amount = gets.chomp
         user.meal_request_based_on_calories(calorie_amount)
       else
-        puts Paint[ "Please enter a valid condition."
+        puts Paint[ "Please enter a valid condition.", :red , :bright]
       end
 
     when "recommend course"
       user.suggest_todays_meals
 
     when "prepare meal"
-      puts Paint[ "What meal would you like to prepare?"
+      puts Paint[ "What meal would you like to prepare?", :green , :bright]
       meal = gets.chomp
       actual_meal = Meal.all.find(meal) { |meal_object| meal_object.name == meal}
       # binding.pry
       user.prepare_meal(actual_meal)
-      puts Paint[ "Your meal is prepared."
+      puts Paint[ "Your meal is prepared.", :green , :bright]
       # binding.pry
       user.eat_meal(actual_meal)
-      puts Paint[ "That was delcious!"
+      puts Paint[ "That was delcious!", :green , :bright]
     end
   when "favorites"
-    puts Paint[ "To check your list of favorite meals type 'check favorites'"
-    puts Paint[ "To add a meal to your favorites type 'add favorite'"
-    puts Paint[ "To remove a meal from your favorites type 'remove favorite'"
+    puts Paint[ "To check your list of favorite meals type 'check favorites'", :green , :bright]
+    puts Paint[ "To add a meal to your favorites type 'add favorite'", :green , :bright]
+    puts Paint[ "To remove a meal from your favorites type 'remove favorite'", :green , :bright]
     input = gets.chomp
     case input
     when "check favorites"
-      puts Paint[ "Here are all your favorite meals:"
+      puts Paint[ "Here are all your favorite meals:", :green , :bright]
       # binding.pry
       Favorite.all.select{|favorite| favorite.user == user}.each do |favorite|
-        puts Paint[ favorite.meal.name
+        puts Paint[ favorite.meal.name, , :green , :bright]
     #  user.favorites.each do |favorite|
         # binding.pry
       #  puts Paint[ favorite.meal.name
       end
     when "add favorite"
-      puts Paint[ "What meal would you like to add?"
+      puts Paint[ "What meal would you like to add?", :green , :bright]
       meal = gets.chomp
       actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
       actual_favorite = Favorite.all.find { |favorite| favorite.meal == actual_meal && favorite.user == user}
@@ -371,25 +371,25 @@ def topic?(user)
       binding.pry
       user.add_meal_to_favorites(actual_meal)
     when "remove favorite"
-      puts Paint[ "What meal would you like to remove?"
+      puts Paint[ "What meal would you like to remove?", :green , :bright]
       meal = gets.chomp
       actual_meal = Meal.all.find { |meal_object| meal_object.name == meal}
       user.delete_meal_from_favorites(actual_meal)
     end
   when "inventory"
-    puts Paint[ "To check your inventory type 'check inventory'"
-    puts Paint[ "To add an item to your inventory type 'add inventory'"
+    puts Paint[ "To check your inventory type 'check inventory'", :green , :bright]
+    puts Paint[ "To add an item to your inventory type 'add inventory'", :green , :bright]
     input = gets.chomp
     case input
     when "check inventory"
-      puts Paint[ "Here are all of the items in your inventory:"
+      puts Paint[ "Here are all of the items in your inventory:", :green , :bright]
       user.kitchen.each do |inventory|
-        puts Paint[ "#{inventory.food.name}:#{inventory.quantity} "
+        puts Paint[ "#{inventory.food.name}:#{inventory.quantity} ", :green , :bright]
       end
     when "add inventory"
-      puts Paint[ "What item would you like to add?"
+      puts Paint[ "What item would you like to add?", :green , :bright]
       food = gets.chomp
-      puts Paint[ "How many would you like to add?"
+      puts Paint[ "How many would you like to add?", :green , :bright]
       amount = gets.chomp.to_i
       # binding.pry
       actual_food = Food.all.find { |food_object| food_object.name == food}
@@ -398,67 +398,67 @@ def topic?(user)
       actual_inventory.update(quantity: new_number)
     end
   else
-    puts Paint[ "Please put a legitimate choice."
+    puts Paint[ "Please put a legitimate choice.", :red, :bright]
   end
 end
 
 
 def meal_recommendation(user)
-  puts Paint[ "How do you want to pick a meal?"
-  puts Paint[ "Please select 'calories','macros', or 'meal time'"
+  puts Paint[ "How do you want to pick a meal?", :green , :bright]
+  puts Paint[ "Please select 'calories','macros', or 'meal time'", :green , :bright]
   selection = gets.chomp
 
   until ['calories','macros','meal time'].include?(selection) do
-    puts Paint[ "I can't recommend a meal based on that. Please select from 'calories', 'macros', or 'meal time'"
+    puts Paint[ "I can't recommend a meal based on that. Please select from 'calories', 'macros', or 'meal time'", :red, :bright]
     selection = gets.chomp
   end
 
   #meal rec based on calories
   if selection == 'calories'
-    puts Paint[ "What is the calorie limit for this meal?"
+    puts Paint[ "What is the calorie limit for this meal?", :green , :bright]
     limit = gets.chomp.to_i
     until limit.is_a? Integer
-      puts Paint[ "I need a number to recommend based on calories. Please enter the calorie limit for this meal."
+      puts Paint[ "I need a number to recommend based on calories. Please enter the calorie limit for this meal.", :red, :bright]
       limit = gets.chomp
     end
     meal_options = user.meal_request_based_on_calories(limit)
-    puts Paint[ "I can recommend the following meals to you:"
+    puts Paint[ "I can recommend the following meals to you:", :green , :bright]
     meal_options.map do |option|
-      puts Paint[ "#{option.name}, a #{option.what_category?} meal with #{option.calories} calories"
+      puts Paint[ "#{option.name}, a #{option.what_category?} meal with #{option.calories} calories", :green , :bright]
     end
     #meal rec based on macros
   elsif selection == 'macros'
-    puts Paint[ "Which macro would you like to specify: protein, fats, or carbohydrates?"
+    puts Paint[ "Which macro would you like to specify: protein, fats, or carbohydrates?", :green , :bright]
     macro = gets.chomp
     until ['protein','fats','carbohydrates'].include?(macro) do
-      puts Paint[ "That's not a valid macro. Please pick from protein, fats, or carbohydrates."
+      puts Paint[ "That's not a valid macro. Please pick from protein, fats, or carbohydrates.", :red , :bright]
       macro = gets.chomp
     end
-    puts Paint[ "How many grams of #{macro} are you looking for?"
+    puts Paint[ "How many grams of #{macro} are you looking for?", :green , :bright]
     amount = gets.chomp.to_i
     until amount.is_a? Integer do
-      puts Paint[ "I need a number amount of #{macro} to make a recommendation. How many grams would you like?"
+      puts Paint[ "I need a number amount of #{macro} to make a recommendation. How many grams would you like?", :red , :bright]
       amount = gets.chomp.to_i
     end
     meal_options = user.suggest_meal_by_macros(macro,amount)
-    puts Paint[ "I can recommend the following meals to you:"
+    puts Paint[ "I can recommend the following meals to you:", :green , :bright]
     meal_options.map do |option|
-      puts Paint[ "#{option.name}, a #{option.calories}-calorie #{option.what_category?} meal with:"
+      puts Paint[ "#{option.name}, a #{option.calories}-calorie #{option.what_category?} meal with:", :green , :bright]
       option.nutrients.each do |nutrient,amount|
-        puts Paint[ "#{amount} grams of #{nutrient}"
-        puts Paint[ "="*25
+        puts Paint[ "#{amount} grams of #{nutrient}", :green , :bright]
+        puts Paint[ "="*25, :white]
       end
     end
     #meal rec based on meal time
   elsif selection == 'meal time'
-    puts Paint[ "Which meal time do you want a suggestion for? Choose breakfast, lunch, or dinner"
+    puts Paint[ "Which meal time do you want a suggestion for? Choose breakfast, lunch, or dinner", :green , :bright]
     meal_time = gets.chomp
     until ["breakfast","lunch","dinner"].include?(meal_time) do
-      puts Paint[ "That wasn't a valid selection. Choose breakfast, lunch, or dinner"
+      puts Paint[ "That wasn't a valid selection. Choose breakfast, lunch, or dinner", :red, :bright]
       meal_time = gets.chomp
     end
     meal_options = user.suggest_meal_by_time(meal_time)
-    puts Paint[ "I can recommend the following meals to you:"
+    puts Paint[ "I can recommend the following meals to you:", :green , :bright]
     meal_options.map do |option|
       "#{option.name}"
     end
@@ -468,13 +468,13 @@ end
 def continue_or_quit?(user)
   input = "yes"
   while input == "yes"
-    puts Paint[ "Do you want to do something else?"
+    puts Paint[ "Do you want to do something else?", :green , :bright]
     input = gets.chomp
     if input == "yes"
       topic?(user)
     else
-      print "Thanks #{user.name}! Don't forget, your user ID is #{user.id}!"
-      print "Enjoy your meals!"
+      puts Paint[ "Thanks #{user.name}! Don't forget, your user ID is #{user.id}!", :yellow, :bright]
+      puts Paint["Enjoy your meals!", :green , :bright]
     end
   end
 end
